@@ -4,8 +4,7 @@ project(ProjectSafe)
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(cryptopp CONFIG REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system)
 
 add_executable(ProjectSafe src/main.cpp src/app/App.cpp src/app/App.h src/encryption/Encryptor.cpp src/encryption/Encryptor.h)
 
-target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp )
+target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp)
