@@ -1,0 +1,9 @@
+{
+  "name" : "projectsafe",
+  "version-string" : "1.0.0",
+  "builtin-baseline" : "82e03905f54fc49d11346e5148e3860747604d86",
+  "dependencies" : [ {
+    "name" : "cryptopp",
+    "version>=" : "8.7.0#3"
+  } ]
+}
