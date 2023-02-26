@@ -1,6 +1,8 @@
 # ProjectSafe
 A secure messenger project.
 
+USE REDIST 2013!
+
 ## TODO ✅:
 - [X] Config.
 - [X] Binary files.
