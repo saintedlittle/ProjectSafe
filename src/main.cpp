@@ -6,8 +6,6 @@ using namespace Application;
 
 using namespace cxxopts;
 
-void optionsParse(int argc, char** argv);
-
 int main(int argc, char** argv) {
     auto app = new App();
 

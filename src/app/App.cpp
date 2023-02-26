@@ -81,6 +81,7 @@ namespace Application {
 
         // Get the key from the user and save it in the files
         USE_COLOR(BACKGROUND_YELLOW);
+        USE_COLOR(BOLD_BLACK);
         cout << "Enter the key: ";
         RESET_COLOR
 
