@@ -13,6 +13,6 @@ add_executable(ProjectSafe
         src/app/App.h
         src/encryption/Encryptor.cpp
         src/encryption/Encryptor.h
-        src/util/Colors.cpp src/util/Colors.h)
+        src/util/Colors.h)
 
 target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp)

@@ -12,6 +12,8 @@
 
 using namespace std;
 
+#define RESET_COLOR UI::setColor(Colors::RESET);
+
 namespace UI {
 
     enum class Colors {

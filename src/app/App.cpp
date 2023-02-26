@@ -24,15 +24,15 @@ namespace Application {
             const string filename = getFilename();
 
             // Encrypt and write to files
-            cout << "Encrypting..." << endl;
             Encryptor::encryptToFile(key, input, filename);
         } else if (operation == 3) {
             // Read and decrypt from files
             const string filename = getFilename();
 
-            cout << "Decrypting..." << endl;
             string decrypted = Encryptor::decryptFromFile(key, filename);
+            UI::setColor(Colors::BOLD_GREEN);
             cout << "Decrypted output: " << decrypted << endl;
+            RESET_COLOR
         } else if (operation == 1) {
             askKeyInput();
         } else if (operation == 4) {
@@ -48,12 +48,13 @@ namespace Application {
         string key;
         ifstream configFile("config.txt");
         if (configFile.is_open()) {
-            // TODO: UI::setColor(Colors::GREEN);
+            UI::setColor(Colors::BOLD_WHITE);
             cout << "\nFound config.txt! Try load..." << endl;
             // Read the key from the files
             getline(configFile, key);
             configFile.close();
-            cout << "\033[32mSuccess !\033[0m" << endl;
+            UI::setColor(Colors::GREEN);
+            cout << "Success !" << endl;
 
         } else {
             cerr << "config.txt not found!" << endl;
@@ -74,12 +75,17 @@ namespace Application {
         string answer;
 
         // Get the key from the user and save it in the files
-        cout << "Enter the key: \033[1;36m";
+        UI::setColor(Colors::BACKGROUND_YELLOW);
+        cout << "Enter the key: ";
+        RESET_COLOR
+
         cin >> key;
-        cout << "\033[0m";
-        cout << "Does i save key? (y/n) \033[1;36m";
+
+        UI::setColor(Colors::YELLOW);
+        cout << "Does i save key? (y/n) ";
+        RESET_COLOR
+
         cin >> answer;
-        cout << "\033[0m";
         if (answer.empty() || answer.starts_with('n')) {
             return key;
         }
@@ -101,13 +107,14 @@ namespace Application {
 
         string temp;
 
-        cout << "Enter the string: \033[1;36m";
+        UI::setColor(Colors::BACKGROUND_YELLOW);
+        UI::setColor(Colors::BLACK);
+        cout << "Enter the string:";
+        RESET_COLOR
 
         cin >> temp;
 
         getline(cin, answer);
-
-        cout << "\033[0m";
 
         return temp + answer;
     }
@@ -115,10 +122,12 @@ namespace Application {
     string App::getFilename() {
         string answer;
 
-        // Get the key from the user and save it in the files
-        cout << "Enter the filename: \033[1;36m";
+        UI::setColor(Colors::BACKGROUND_BLUE);
+        UI::setColor(Colors::BLACK);
+        cout << "Enter the filename:";
+        RESET_COLOR
+
         cin >> answer;
-        cout << "\033[0m";
 
         return answer;
     }
@@ -127,7 +136,10 @@ namespace Application {
         int answer;
 
         // Get the key from the user and save it in the files
-        cout << "Select operation(1/2/3/4): ";
+        UI::setColor(Colors::BACKGROUND_YELLOW);
+        cout << "Select operation(1/2/3/4):";
+        RESET_COLOR
+
         cin >> answer;
 
         return answer;
@@ -149,7 +161,12 @@ namespace Application {
     }
 
     void App::waitForAnyKey() {
-        cout << "======== Done ========" << endl;
+        cout << endl;
+        UI::setColor(Colors::BACKGROUND_RED);
+        cout << "======== Done ========";
+        RESET_COLOR
+        cout << "\n";
+        UI::setColor(Colors::BOLD_CYAN);
         cout << "Press any key to exit." << endl;
         _getch();  // wait for a key press
     }
