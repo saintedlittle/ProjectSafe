@@ -41,12 +41,14 @@ namespace Application {
             cerr << "SELECT 1/2/3/4 !!!" << endl;
         }
 
+        waitForAnyKey();
     }
 
     string App::getKey() {
         string key;
         ifstream configFile("config.txt");
         if (configFile.is_open()) {
+            // TODO: UI::setColor(Colors::GREEN);
             cout << "\nFound config.txt! Try load..." << endl;
             // Read the key from the files
             getline(configFile, key);
@@ -144,5 +146,11 @@ namespace Application {
         cout << "4. Exit\n";
         cout << "*********************************************\n";
         cout << "\033[0m";
+    }
+
+    void App::waitForAnyKey() {
+        cout << "======== Done ========" << endl;
+        cout << "Press any key to exit." << endl;
+        _getch();  // wait for a key press
     }
 } // Application

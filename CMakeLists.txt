@@ -8,11 +8,11 @@ set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 find_package(cryptopp CONFIG REQUIRED)
 
 add_executable(ProjectSafe
-        src/main.cpp 
+        src/main.cpp
         src/app/App.cpp
         src/app/App.h
         src/encryption/Encryptor.cpp
         src/encryption/Encryptor.h
-        )
+        src/util/Colors.cpp src/util/Colors.h)
 
 target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp)

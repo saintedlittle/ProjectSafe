@@ -8,11 +8,16 @@
 #define PROJECTSAFE_APP_H
 
 #include <string>
+#include <conio.h>
+
 #include "cryptopp/osrng.h"
 
 #include "../encryption/Encryptor.h"
+#include "../util/Colors.h"
 
 using namespace std;
+
+using namespace UI;
 
 namespace Application {
 
@@ -28,6 +33,9 @@ namespace Application {
         static int getOperation();
 
         static void helpMessage();
+
+        static void waitForAnyKey();
+
     };
 
 } // Application
