@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 
 find_package(cryptopp CONFIG REQUIRED)
+find_package(cxxopts CONFIG REQUIRED)
 
 add_executable(ProjectSafe
         src/main.cpp
@@ -15,4 +16,4 @@ add_executable(ProjectSafe
         src/encryption/Encryptor.h
         src/util/Colors.h)
 
-target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp)
+target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts)

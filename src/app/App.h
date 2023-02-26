@@ -24,7 +24,21 @@ namespace Application {
     class App {
     public:
         void process();
+
+        void setKey(string str);
+        void setOutput(string str);
+        void setInput(string str);
+
     private:
+        string key;
+        bool isKeyDefined;
+
+        string output;
+        bool isOutputDefined;
+
+        string input;
+        bool isInputDefined;
+
         string getKey();
         static string askKeyInput();
 
@@ -35,7 +49,6 @@ namespace Application {
         static void helpMessage();
 
         static void waitForAnyKey();
-
     };
 
 } // Application

@@ -13,6 +13,7 @@
 using namespace std;
 
 #define RESET_COLOR UI::setColor(Colors::RESET);
+#define USE_COLOR(color) UI::setColor(Colors::color);
 
 namespace UI {
 

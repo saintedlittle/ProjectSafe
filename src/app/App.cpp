@@ -5,6 +5,7 @@
 #include "App.h"
 
 #include <fstream>
+#include <utility>
 
 using namespace Encryption;
 
@@ -12,25 +13,27 @@ namespace Application {
 
     void App::process() {
 
-        const string key = getKey();
+        getKey();
 
         helpMessage();
 
         const int operation = getOperation();
 
         if (operation == 2) {
-            const string input = getInputString();
+            string inputString = getInputString();
 
-            const string filename = getFilename();
+            if (!isOutputDefined)
+                output = getFilename();
 
             // Encrypt and write to files
-            Encryptor::encryptToFile(key, input, filename);
+            Encryptor::encryptToFile(key, inputString, output);
         } else if (operation == 3) {
             // Read and decrypt from files
-            const string filename = getFilename();
+            if (!isInputDefined)
+                input = getFilename();
 
-            string decrypted = Encryptor::decryptFromFile(key, filename);
-            UI::setColor(Colors::BOLD_GREEN);
+            string decrypted = Encryptor::decryptFromFile(key, input);
+            USE_COLOR(BOLD_GREEN);
             cout << "Decrypted output: " << decrypted << endl;
             RESET_COLOR
         } else if (operation == 1) {
@@ -45,15 +48,17 @@ namespace Application {
     }
 
     string App::getKey() {
-        string key;
+        if (isKeyDefined)
+            return key;
+
         ifstream configFile("config.txt");
         if (configFile.is_open()) {
-            UI::setColor(Colors::BOLD_WHITE);
+            USE_COLOR(BOLD_WHITE);
             cout << "\nFound config.txt! Try load..." << endl;
             // Read the key from the files
             getline(configFile, key);
             configFile.close();
-            UI::setColor(Colors::GREEN);
+            USE_COLOR(GREEN);
             cout << "Success !" << endl;
 
         } else {
@@ -75,13 +80,13 @@ namespace Application {
         string answer;
 
         // Get the key from the user and save it in the files
-        UI::setColor(Colors::BACKGROUND_YELLOW);
+        USE_COLOR(BACKGROUND_YELLOW);
         cout << "Enter the key: ";
         RESET_COLOR
 
         cin >> key;
 
-        UI::setColor(Colors::YELLOW);
+        USE_COLOR(YELLOW);
         cout << "Does i save key? (y/n) ";
         RESET_COLOR
 
@@ -107,8 +112,8 @@ namespace Application {
 
         string temp;
 
-        UI::setColor(Colors::BACKGROUND_YELLOW);
-        UI::setColor(Colors::BLACK);
+        USE_COLOR(BACKGROUND_YELLOW);
+        USE_COLOR(BLACK);
         cout << "Enter the string:";
         RESET_COLOR
 
@@ -122,8 +127,8 @@ namespace Application {
     string App::getFilename() {
         string answer;
 
-        UI::setColor(Colors::BACKGROUND_BLUE);
-        UI::setColor(Colors::BLACK);
+        USE_COLOR(BACKGROUND_BLUE);
+        USE_COLOR(BLACK);
         cout << "Enter the filename:";
         RESET_COLOR
 
@@ -136,7 +141,7 @@ namespace Application {
         int answer;
 
         // Get the key from the user and save it in the files
-        UI::setColor(Colors::BACKGROUND_YELLOW);
+        USE_COLOR(BACKGROUND_YELLOW);
         cout << "Select operation(1/2/3/4):";
         RESET_COLOR
 
@@ -162,12 +167,28 @@ namespace Application {
 
     void App::waitForAnyKey() {
         cout << endl;
-        UI::setColor(Colors::BACKGROUND_RED);
+        USE_COLOR(BACKGROUND_RED);
         cout << "======== Done ========";
         RESET_COLOR
         cout << "\n";
-        UI::setColor(Colors::BOLD_CYAN);
+        USE_COLOR(BOLD_CYAN);
         cout << "Press any key to exit." << endl;
         _getch();  // wait for a key press
     }
+
+    void App::setKey(string str) {
+        this->key = std::move(str);
+        isKeyDefined = true;
+    }
+
+    void App::setOutput(string str) {
+        this->output = std::move(str);
+        isOutputDefined = true;
+    }
+
+    void App::setInput(string str) {
+        this->input = std::move(str);
+        isInputDefined = true;
+    }
+
 } // Application
