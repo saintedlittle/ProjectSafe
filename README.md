@@ -6,4 +6,4 @@ A secure messenger project.
 - [X] Binary files.
 - [X] Encrypt/Decrypt via AES.
 - [ ] Send files.
-- [ ] Use good arch.
+- [X] Use good arch.
