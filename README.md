@@ -7,3 +7,4 @@ A secure messenger project.
 - [X] Encrypt/Decrypt via AES.
 - [ ] Send files.
 - [X] Use good arch.
+- [X] Commandline arguments.
