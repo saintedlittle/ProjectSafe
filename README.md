@@ -5,6 +5,7 @@ USE REDIST 2013!
 
 ## TODO ✅:
 - [X] Config.
+- [X] Add support to use file as key.
 - [X] Binary files.
 - [X] Encrypt/Decrypt via AES.
 - [ ] Send files.
