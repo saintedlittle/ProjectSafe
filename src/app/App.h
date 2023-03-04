@@ -14,10 +14,12 @@
 
 #include "../encryption/Encryptor.h"
 #include "../util/Colors.h"
+#include "../key/SafeKey.h"
 
 using namespace std;
 
 using namespace UI;
+using namespace Encryption;
 
 namespace Application {
 
@@ -26,12 +28,12 @@ namespace Application {
         void process();
 
         void setKey(string str);
+
         void setOutput(string str);
         void setInput(string str);
 
     private:
         string key;
-        bool isKeyDefined;
 
         string output;
         bool isOutputDefined;
@@ -39,7 +41,6 @@ namespace Application {
         string input;
         bool isInputDefined;
 
-        string getKey();
         static string askKeyInput();
 
         static string getInputString();
@@ -47,6 +48,8 @@ namespace Application {
         static int getOperation();
 
         static void helpMessage();
+
+        static void helpMessageBody();
 
         static void waitForAnyKey();
     };

@@ -13,65 +13,52 @@ namespace Application {
 
     void App::process() {
 
-        getKey();
-
         helpMessage();
 
-        const int operation = getOperation();
-
-        if (operation == 2) {
-            string inputString = getInputString();
-
-            if (!isOutputDefined)
-                output = getFilename();
-
-            // Encrypt and write to files
-            Encryptor::encryptToFile(key, inputString, output);
-        } else if (operation == 3) {
-            // Read and decrypt from files
-            if (!isInputDefined)
-                input = getFilename();
-
-            string decrypted = Encryptor::decryptFromFile(key, input);
-            USE_COLOR(BOLD_GREEN);
-            cout << "Decrypted output: " << decrypted << endl;
+        bool isFirst = true;
+        while (1) {
+            if (!isFirst) {
+                cout << endl;
+                helpMessageBody();
+            }
             RESET_COLOR
-        } else if (operation == 1) {
-            askKeyInput();
-        } else if (operation == 4) {
-            exit(EXIT_SUCCESS);
-        } else {
-            cerr << "SELECT 1/2/3/4 !!!" << endl;
+
+            int operation = getOperation();
+
+            if (operation == 2) {
+                USE_COLOR(BOLD_GREEN);
+                cout << "TOKEN FOR USE: " << key << endl;
+                RESET_COLOR
+            } else if (operation == 3) {
+                string inputString = getInputString();
+
+                if (!isOutputDefined)
+                    output = getFilename();
+
+                // Encrypt and write to files
+                Encryptor::encryptToFile(key, inputString, output);
+            } else if (operation == 4) {
+                // Read and decrypt from files
+                if (!isInputDefined)
+                    input = getFilename();
+
+                string decrypted = Encryptor::decryptFromFile(key, input);
+                USE_COLOR(BOLD_GREEN);
+                cout << "Decrypted output: " << decrypted << endl;
+                RESET_COLOR
+            } else if (operation == 1) {
+                askKeyInput();
+            } else if (operation == 5) {
+                break;
+            } else {
+                cerr << "SELECT 1/2/3/4/5 !!!" << endl;
+            }
+
+            isFirst = false;
         }
 
         waitForAnyKey();
-    }
 
-    string App::getKey() {
-        if (isKeyDefined)
-            return key;
-
-        ifstream configFile("config.txt");
-        if (configFile.is_open()) {
-            USE_COLOR(BOLD_WHITE);
-            cout << "\nFound config.txt! Try load..." << endl;
-            // Read the key from the files
-            getline(configFile, key);
-            configFile.close();
-            USE_COLOR(GREEN);
-            cout << "Success !" << endl;
-
-        } else {
-            cerr << "config.txt not found!" << endl;
-            key = askKeyInput();
-        }
-
-        if (key.empty()) {
-            cerr << "config.txt is empty!" << endl;
-            key = askKeyInput();
-        }
-
-        return key;
     }
 
     string App::askKeyInput() {
@@ -96,14 +83,8 @@ namespace Application {
             return key;
         }
 
-        ofstream configFile("config.txt");
-        if (configFile.is_open()) {
-            configFile << key;
-            configFile.close();
-        }
-        else {
-            cerr << "Failed to save the key in config.txt!" << endl;
-        }
+        SafeKey keyFile;
+        keyFile.save(getFilename(), key);
 
         return key;
     }
@@ -152,18 +133,15 @@ namespace Application {
     }
 
     void App::helpMessage() {
-        cout << "\033[1;36m";
+        USE_COLOR(CYAN);
         cout << "**********************************************\n";
         cout << "*          Welcome to ProjectSafe!           *\n";
         cout << "* This program can encrypt and decrypt files *\n";
         cout << "* and strings. Choose an option from below   *\n";
         cout << "**********************************************\n";
-        cout << "1. Change/Select key.\n";
-        cout << "2. Encrypt string.\n";
-        cout << "3. Decrypt files.\n";
-        cout << "4. Exit\n";
+        helpMessageBody();
         cout << "*********************************************\n";
-        cout << "\033[0m";
+        RESET_COLOR
     }
 
     void App::waitForAnyKey() {
@@ -179,7 +157,6 @@ namespace Application {
 
     void App::setKey(string str) {
         this->key = std::move(str);
-        isKeyDefined = true;
     }
 
     void App::setOutput(string str) {
@@ -190,6 +167,15 @@ namespace Application {
     void App::setInput(string str) {
         this->input = std::move(str);
         isInputDefined = true;
+    }
+
+    void App::helpMessageBody() {
+        USE_COLOR(CYAN);
+        cout << "1. Change/Select key.\n";
+        cout << "2. View key.\n";
+        cout << "3. Encrypt string.\n";
+        cout << "4. Decrypt files.\n";
+        cout << "5. Exit\n";
     }
 
 } // Application

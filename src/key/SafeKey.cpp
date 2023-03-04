@@ -6,12 +6,13 @@
 
 namespace Encryption {
 
-    SafeKey::SafeKey()  : xor_key_("You are on thin ice") {}
-
     bool SafeKey::save(const string &filename, const string &data) {
         ofstream file(filename, ios::binary | ios::out);
         if (!file.is_open()) {
+            USE_COLOR(RED)
             cerr << "Error: failed to open file! " << filename << endl;
+            RESET_COLOR;
+
             CREATE_FILE(filename);
 
             save(filename, data);
@@ -43,7 +44,9 @@ namespace Encryption {
         // Read the entire file into memory
         string data(size, '\0');
         if (!file.read(&data[0], size)) {
+            USE_COLOR(RED)
             cerr << "Error: failed to read file " << filename << endl;
+            RESET_COLOR;
             return 2;
         }
 

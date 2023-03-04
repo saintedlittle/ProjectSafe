@@ -5,21 +5,26 @@
 #ifndef PROJECTSAFE_SAFEKEY_H
 #define PROJECTSAFE_SAFEKEY_H
 
-#include <string>
-#include <fstream>
-#include <iostream>
-
-using namespace std;
-
 #define CREATE_FILE(filename)             cout << "File " << filename << " does not exist. Creating the file..." << endl; \
                                           ofstream new_file(filename, ios::binary | ios::out); \
                                           new_file.close();
+
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <utility>
+
+#include "../util/Colors.h"
+
+using namespace std;
+
+using namespace UI;
 
 namespace Encryption {
 
     class SafeKey {
     public:
-        SafeKey();
+        explicit SafeKey(string xor_key="You are on thin ice") : xor_key_(std::move(xor_key)) {}
 
         bool save(const string& filename, const string& data);
 

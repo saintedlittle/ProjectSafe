@@ -6,6 +6,8 @@ using namespace Application;
 
 using namespace cxxopts;
 
+string loadKey(const string& filename);
+
 int main(int argc, char** argv) {
     auto app = new App();
 
@@ -13,6 +15,7 @@ int main(int argc, char** argv) {
 
     options.add_options()
             ("k,key", "Define key.", cxxopts::value<string>())
+            ("ik,key-file", "Define key-file.", cxxopts::value<string>())
             ("f,file", "Define input file.", cxxopts::value<string>())
             ("o,output", "Define output file.", cxxopts::value<string>())
             ("h,help", "This menu.")
@@ -26,10 +29,6 @@ int main(int argc, char** argv) {
         exit(0);
     }
 
-    string key;
-    if (result.count("key"))
-        key = result["key"].as<string>();
-    
     string output;
     if (result.count("output"))
         output = result["output"].as<string>();
@@ -38,15 +37,41 @@ int main(int argc, char** argv) {
     if (result.count("file"))
         file = result["file"].as<string>();
 
-    if (!key.empty())
-        app->setKey(key);
     if (!output.empty())
         app->setOutput(output);
     if(!file.empty())
         app->setInput(file);
 
+    string key;
+    if (result.count("key"))
+        key = result["key"].as<string>();
+
+    string ik;
+    if (result.count("key-file"))
+        ik = result["key-file"].as<string>();
+
+    if (ik.empty())
+        if (!key.empty())
+            app->setKey(key);
+        else app->setKey("TOKEN");
+    else if (!ik.empty())
+        app->setKey(loadKey(ik));
 
     app->process();
-
     return EXIT_SUCCESS;
+}
+
+string loadKey(const string& filename) {
+    SafeKey key;
+    switch (key.load(filename)) {
+        case 1:
+            key.save(filename, "TOKEN");
+            key.load(filename);
+            return key.getToken();
+        case 2:
+            getch();
+            exit(EXIT_FAILURE);
+    }
+
+    return key.getToken();
 }
