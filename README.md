@@ -11,3 +11,4 @@ USE REDIST 2013!
 - [ ] Send files.
 - [X] Use good arch.
 - [X] Commandline arguments.
+- [X] Installer.
