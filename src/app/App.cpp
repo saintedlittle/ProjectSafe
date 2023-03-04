@@ -62,8 +62,6 @@ namespace Application {
     }
 
     string App::askKeyInput() {
-        string key;
-
         string answer;
 
         // Get the key from the user and save it in the files
@@ -124,6 +122,7 @@ namespace Application {
 
         // Get the key from the user and save it in the files
         USE_COLOR(BACKGROUND_YELLOW);
+        USE_COLOR(BOLD_BLACK);
         cout << "Select operation(1/2/3/4):";
         RESET_COLOR
 

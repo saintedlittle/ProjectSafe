@@ -41,7 +41,7 @@ namespace Application {
         string input;
         bool isInputDefined;
 
-        static string askKeyInput();
+        string askKeyInput();
 
         static string getInputString();
         static string getFilename();
