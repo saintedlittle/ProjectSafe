@@ -24,7 +24,6 @@ target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts)
 
 # Install the executable and any required DLLs
 install(TARGETS ProjectSafe RUNTIME DESTINATION bin)
-#install(FILES $<TARGET_FILE_DIR:ProjectSafe>/cryptopp.dll DESTINATION bin)
 
 # Create an installer
 set(CPACK_GENERATOR NSIS) # Use NSIS as the installer generator
@@ -58,7 +57,6 @@ include(CPack)
 add_custom_command(TARGET ProjectSafe POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/dist
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:ProjectSafe> ${CMAKE_BINARY_DIR}/dist/
-#        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE_DIR:ProjectSafe>/cryptopp.dll ${CMAKE_BINARY_DIR}/dist/
         COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cpack -C ${CPACK_PACKAGE_NAME}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/${CPACK_PACKAGE_NAME}.exe ${CMAKE_BINARY_DIR}/dist/
         COMMENT "Building installer and uploading files"
