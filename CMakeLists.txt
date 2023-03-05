@@ -30,7 +30,7 @@ set(CPACK_GENERATOR NSIS) # Use NSIS as the installer generator
 set(CPACK_PACKAGE_NAME "ProjectSafe")
 set(CPACK_PACKAGE_VENDOR "LeakTeam")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This program can encrypt and decrypt files and strings.")
-set(CPACK_PACKAGE_VERSION "1.0.0")
+set(CPACK_PACKAGE_VERSION "2.1.0")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
