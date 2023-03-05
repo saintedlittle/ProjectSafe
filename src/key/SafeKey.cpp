@@ -7,13 +7,13 @@
 namespace Encryption {
 
     bool SafeKey::save(const string &filename, const string &data) {
-        ofstream file(filename, ios::binary | ios::out);
+
+        ofstream file = fileManager.createBinaryFile(filename + ".safe");
+
         if (!file.is_open()) {
             USE_COLOR(RED)
             cerr << "Error: failed to open file! " << filename << endl;
             RESET_COLOR;
-
-            CREATE_FILE(filename);
 
             save(filename, data);
         }
@@ -26,11 +26,14 @@ namespace Encryption {
 
         // Close the file
         file.close();
+
         return true;
     }
 
     int SafeKey::load(const string &filename) {
-        ifstream file(filename, ios::binary);
+
+        ifstream file = fileManager.openFile(filename);
+
         if (!file.is_open()) {
             CREATE_FILE(filename);
             return 1;

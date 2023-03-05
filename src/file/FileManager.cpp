@@ -27,12 +27,10 @@
 #include "FileManager.h"
 
 #ifdef _WIN32
-#include <windows.h>
-
-#include <utility>
-#define ENV_HOME "USERPROFILE"
+    #include <utility>
+    #define ENV_HOME "USERPROFILE"
 #else
-#include <unistd.h>
+    #include <unistd.h>
     #define ENV_HOME "HOME"
 #endif
 
@@ -65,10 +63,22 @@ namespace Files {
 
         if (filesystem::exists(filePath))
         {
-            return ofstream(filePath.string());
+            return ofstream(filePath.string(), ios::out);
         }
 
-        return ofstream(filePath.string());
+        return ofstream(filePath.string(), ios::out);
+    }
+
+
+    ofstream FileManager::createBinaryFile(const string &filename) {
+        filesystem::path filePath = m_folderPath / filename;
+
+        if (filesystem::exists(filePath))
+        {
+            return ofstream(filePath.string(), ios::binary | ios::out);
+        }
+
+        return ofstream(filePath.string(), ios::binary | ios::out);
     }
 
     ifstream FileManager::openFile(const string& filename)
@@ -81,6 +91,18 @@ namespace Files {
         }
 
         return ifstream(filePath.string());
+    }
+
+
+    ifstream FileManager::openBinaryFile(const string &filename) {
+        filesystem::path filePath = m_folderPath / filename;
+
+        if (!filesystem::exists(filePath))
+        {
+            return {};
+        }
+
+        return ifstream(filePath.string(), ios::binary);
     }
 
     bool FileManager::deleteFile(const string& filename)
@@ -97,4 +119,5 @@ namespace Files {
 
         return !error;
     }
+
 } // Files

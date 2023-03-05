@@ -20,10 +20,15 @@ namespace Files {
 
     class FileManager {
     public:
-        explicit FileManager(string  programName);
+        explicit FileManager(string  programName="ProjectSafe");
         ofstream createFile(const string& filename);
+        ofstream createBinaryFile(const string& filename);
+
         ifstream openFile(const string& filename);
+        ifstream openBinaryFile(const string& filename);
         bool deleteFile(const string& filename);
+
+        string getFolderPath() { return m_folderPath.string(); }
 
     private:
         string m_programName;
