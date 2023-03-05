@@ -18,12 +18,12 @@ add_executable(ProjectSafe
         src/util/Colors.h
         src/key/SafeKey.cpp
         src/key/SafeKey.h
-        )
+        src/file/FileManager.cpp src/file/FileManager.h)
 
 target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts)
 
 # Install the executable and any required DLLs
-install(TARGETS ProjectSafe RUNTIME DESTINATION bin)
+install(TARGETS ProjectSafe RUNTIME DESTINATION bin COMPONENT app)
 
 # Create an installer
 set(CPACK_GENERATOR NSIS) # Use NSIS as the installer generator

@@ -6,8 +6,8 @@
 #define PROJECTSAFE_SAFEKEY_H
 
 #define CREATE_FILE(filename)             cout << "File " << filename << " does not exist. Creating the file..." << endl; \
-                                          ofstream new_file(filename, ios::binary | ios::out); \
-                                          new_file.close();
+                                                  ofstream new_file = fileManager.createBinaryFile(filename); \
+                                            new_file.close();
 
 #include <string>
 #include <fstream>
@@ -15,10 +15,12 @@
 #include <utility>
 
 #include "../util/Colors.h"
+#include "../file/FileManager.h"
 
 using namespace std;
 
 using namespace UI;
+using namespace Files;
 
 namespace Encryption {
 
@@ -38,6 +40,8 @@ namespace Encryption {
         string xor_key_;
 
         string token;
+
+        FileManager fileManager;
     };
 
 } // Encryption
