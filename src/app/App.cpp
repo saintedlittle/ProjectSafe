@@ -29,7 +29,11 @@ namespace Application {
                 USE_COLOR(BOLD_GREEN);
                 cout << "TOKEN FOR USE: " << key << endl;
                 RESET_COLOR
+                WAIT
             } else if (operation == 3) {
+                display_file_table();
+                WAIT
+            } else if (operation == 4) {
                 string inputString = getInputString();
 
                 if (!isOutputDefined)
@@ -37,7 +41,8 @@ namespace Application {
 
                 // Encrypt and write to files
                 Encryptor::encryptToFile(key, inputString, output);
-            } else if (operation == 4) {
+                WAIT
+            } else if (operation == 5) {
                 // Read and decrypt from files
                 if (!isInputDefined)
                     input = getFilename();
@@ -46,9 +51,11 @@ namespace Application {
                 USE_COLOR(BOLD_GREEN);
                 cout << "Decrypted output: " << decrypted << endl;
                 RESET_COLOR
+                WAIT
             } else if (operation == 1) {
                 askKeyInput();
-            } else if (operation == 5) {
+                WAIT
+            } else if (operation == 6) {
                 break;
             } else {
                 cerr << "SELECT 1/2/3/4/5 !!!" << endl;
@@ -172,9 +179,28 @@ namespace Application {
         USE_COLOR(CYAN);
         cout << "1. Change/Select key.\n";
         cout << "2. View key.\n";
-        cout << "3. Encrypt string.\n";
-        cout << "4. Decrypt files.\n";
-        cout << "5. Exit\n";
+        cout << "3. View available keys.\n";
+        cout << "4. Encrypt string.\n";
+        cout << "5. Decrypt files.\n";
+        cout << "6. Exit\n";
+    }
+
+    void App::display_file_table() {
+        FileManager fileManager;
+        filesystem::path folder_path = fileManager.getKeysPath();
+
+        std::filesystem::directory_iterator end_itr;
+        int file_number = 1;
+
+        for (std::filesystem::directory_iterator itr(folder_path); itr != end_itr; ++itr) {
+            if (std::filesystem::is_regular_file(itr->path())) {
+                auto creation_time = std::filesystem::last_write_time(itr->path());
+                auto system_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(creation_time - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now());
+                std::time_t creation_date = std::chrono::system_clock::to_time_t(system_time);
+                std::cout << file_number << ". " << itr->path().filename().string() << " - " << std::ctime(&creation_date);
+                file_number++;
+            }
+        }
     }
 
 } // Application

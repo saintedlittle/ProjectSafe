@@ -30,6 +30,8 @@ namespace Files {
 
         string getFolderPath() { return m_folderPath.string(); }
 
+        filesystem::path getKeysPath() { return m_folderPath_keys; }
+
     private:
         string m_programName;
         filesystem::path m_folderPath;

@@ -8,6 +8,7 @@
 #define PROJECTSAFE_APP_H
 
 #include <string>
+
 #include <conio.h>
 
 #include "cryptopp/osrng.h"
@@ -20,6 +21,8 @@ using namespace std;
 
 using namespace UI;
 using namespace Encryption;
+
+#define WAIT                 USE_COLOR(BOLD_WHITE); cout << "\nPRESS ANY BUTTON... " << endl; RESET_COLOR getch();
 
 namespace Application {
 
@@ -52,7 +55,9 @@ namespace Application {
         static void helpMessageBody();
 
         static void waitForAnyKey();
-    };
+
+        static void display_file_table();
+        };
 
 } // Application
 
