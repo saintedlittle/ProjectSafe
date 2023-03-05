@@ -20,14 +20,14 @@ namespace Files {
 
     class FileManager {
     public:
-        explicit FileManager(std::string programName);
-        bool createFile(const std::string& filename);
-        bool openFile(const std::string& filename);
-        bool deleteFile(const std::string& filename);
+        explicit FileManager(string  programName);
+        ofstream createFile(const string& filename);
+        ifstream openFile(const string& filename);
+        bool deleteFile(const string& filename);
 
     private:
-        std::string m_programName;
-        boost::filesystem::path m_folderPath{}{};
+        string m_programName;
+        filesystem::path m_folderPath;
 
         bool createFolder();
     };

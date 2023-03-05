@@ -17,8 +17,8 @@
 
     The constructor initializes the class members m_programName and m_folderPath, where m_programName stores the name of the program, and m_folderPath stores the full path to the folder created in the user's home directory with the program name.
     The createFolder() function is called inside the constructor to check whether the folder exists or not, and create the folder if it does not exist.
-    The createFolder() function uses the std::filesystem::exists() function to check whether the folder exists or not.
-    If the folder exists, it returns true; otherwise, it creates the folder using the std::filesystem::create_directories() function.
+    The createFolder() function uses the filesystem::exists() function to check whether the folder exists or not.
+    If the folder exists, it returns true; otherwise, it creates the folder using the filesystem::create_directories() function.
 
     The createFile() function takes a filename as an argument and creates a file in the folder by combining the folder path and filename.
     The function returns true if the file is created
@@ -37,58 +37,63 @@
 #endif
 
 namespace Files {
-    FileManager::FileManager(string programName) : m_programName(std::move(programName)) {
-        m_folderPath = std::filesystem::path(getenv(ENV_HOME)) / m_programName;
+
+    FileManager::FileManager(string  programName)
+            : m_programName(std::move(programName))
+    {
+        m_folderPath = filesystem::path(getenv(ENV_HOME)) / m_programName;
 
         createFolder();
     }
 
-    bool FileManager::createFile(const string &filename) {
-        std::filesystem::path filePath = m_folderPath / filename;
-
-        if (std::filesystem::exists(filePath))
-        {
-            return false;
-        }
-
-        std::ofstream file(filePath.string());
-        return file.good();
-    }
-
-    bool FileManager::openFile(const string &filename) {
-        std::filesystem::path filePath = m_folderPath / filename;
-
-        if (!std::filesystem::exists(filePath))
-        {
-            return false;
-        }
-
-        std::ifstream file(filePath.string());
-        return file.good();
-    }
-
-    bool FileManager::deleteFile(const string &filename) {
-        std::filesystem::path filePath = m_folderPath / filename;
-
-        if (!std::filesystem::exists(filePath))
-        {
-            return false;
-        }
-
-        std::error_code error;
-        std::filesystem::remove(filePath, error);
-
-        return !error;
-    }
-
-    bool FileManager::createFolder() {
-        if (std::filesystem::exists(m_folderPath))
+    bool FileManager::createFolder()
+    {
+        if (filesystem::exists(m_folderPath))
         {
             return true;
         }
 
-        std::error_code error;
-        std::filesystem::create_directories(m_folderPath, error);
+        error_code error;
+        filesystem::create_directories(m_folderPath, error);
+
+        return !error;
+    }
+
+    ofstream FileManager::createFile(const string& filename)
+    {
+        filesystem::path filePath = m_folderPath / filename;
+
+        if (filesystem::exists(filePath))
+        {
+            return ofstream(filePath.string());
+        }
+
+        return ofstream(filePath.string());
+    }
+
+    ifstream FileManager::openFile(const string& filename)
+    {
+        filesystem::path filePath = m_folderPath / filename;
+
+        if (!filesystem::exists(filePath))
+        {
+            return {};
+        }
+
+        return ifstream(filePath.string());
+    }
+
+    bool FileManager::deleteFile(const string& filename)
+    {
+        filesystem::path filePath = m_folderPath / filename;
+
+        if (!filesystem::exists(filePath))
+        {
+            return false;
+        }
+
+        error_code error;
+        filesystem::remove(filePath, error);
 
         return !error;
     }
