@@ -12,3 +12,4 @@ USE REDIST 2013!
 - [X] Use good arch.
 - [X] Commandline arguments.
 - [X] Installer.
+- [X] Folder in USERHOME.
