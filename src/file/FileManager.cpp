@@ -40,8 +40,12 @@ namespace Files {
             : m_programName(std::move(programName))
     {
         m_folderPath = filesystem::path(getenv(ENV_HOME)) / m_programName;
+        m_folderPath_keys = m_folderPath / "keys";
+        m_folderPath_data = m_folderPath / "data";
 
         createFolder();
+        createData();
+        createKeys();
     }
 
     bool FileManager::createFolder()
@@ -57,9 +61,33 @@ namespace Files {
         return !error;
     }
 
+    bool FileManager::createData() {
+        if (filesystem::exists(m_folderPath_data))
+        {
+            return true;
+        }
+
+        error_code error;
+        filesystem::create_directories(m_folderPath_data, error);
+
+        return !error;
+    }
+
+    bool FileManager::createKeys() {
+        if (filesystem::exists(m_folderPath_keys))
+        {
+            return true;
+        }
+
+        error_code error;
+        filesystem::create_directories(m_folderPath_keys, error);
+
+        return !error;
+    }
+
     ofstream FileManager::createFile(const string& filename)
     {
-        filesystem::path filePath = m_folderPath / filename;
+        filesystem::path filePath = m_folderPath_data / filename;
 
         if (filesystem::exists(filePath))
         {
@@ -71,7 +99,7 @@ namespace Files {
 
 
     ofstream FileManager::createBinaryFile(const string &filename) {
-        filesystem::path filePath = m_folderPath / filename;
+        filesystem::path filePath = m_folderPath_keys / filename;
 
         if (filesystem::exists(filePath))
         {
@@ -83,7 +111,7 @@ namespace Files {
 
     ifstream FileManager::openFile(const string& filename)
     {
-        filesystem::path filePath = m_folderPath / filename;
+        filesystem::path filePath = m_folderPath_data / filename;
 
         if (!filesystem::exists(filePath))
         {
@@ -95,7 +123,7 @@ namespace Files {
 
 
     ifstream FileManager::openBinaryFile(const string &filename) {
-        filesystem::path filePath = m_folderPath / filename;
+        filesystem::path filePath = m_folderPath_keys / filename;
 
         if (!filesystem::exists(filePath))
         {
@@ -107,7 +135,7 @@ namespace Files {
 
     bool FileManager::deleteFile(const string& filename)
     {
-        filesystem::path filePath = m_folderPath / filename;
+        filesystem::path filePath = m_folderPath_data / filename;
 
         if (!filesystem::exists(filePath))
         {

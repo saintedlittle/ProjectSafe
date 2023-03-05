@@ -26,6 +26,7 @@ namespace Files {
 
         ifstream openFile(const string& filename);
         ifstream openBinaryFile(const string& filename);
+
         bool deleteFile(const string& filename);
 
         string getFolderPath() { return m_folderPath.string(); }
@@ -33,8 +34,12 @@ namespace Files {
     private:
         string m_programName;
         filesystem::path m_folderPath;
+        filesystem::path m_folderPath_keys;
+        filesystem::path m_folderPath_data;
 
         bool createFolder();
+        bool createData();
+        bool createKeys();
     };
 
 } // Files
