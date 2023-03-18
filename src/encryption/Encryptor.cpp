@@ -45,6 +45,7 @@ namespace Encryption {
         file.write(reinterpret_cast<const char*>(iv), AES::BLOCKSIZE);
         file.write(ciphertext.c_str(), ciphertext.length());
         file.close();
+
         return ciphertext;
     }
 

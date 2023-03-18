@@ -6,8 +6,12 @@ set(CMAKE_CXX_STANDARD 20)
 set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 set(VCPKG_BUILD_TYPE "static")
 
+set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
+
 find_package(cryptopp CONFIG REQUIRED)
 find_package(cxxopts CONFIG REQUIRED)
+
+find_library(DiscordRpcLib NAMES discord-rpc PATHS ${LIBS_DIR})
 
 add_executable(ProjectSafe
         src/main.cpp
@@ -18,9 +22,9 @@ add_executable(ProjectSafe
         src/util/Colors.h
         src/key/SafeKey.cpp
         src/key/SafeKey.h
-        src/file/FileManager.cpp src/file/FileManager.h)
+        src/file/FileManager.cpp src/file/FileManager.h src/discord/Discord.h)
 
-target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts Crow::Crow)
+target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts ${DiscordRpcLib})
 
 # Install the executable and any required DLLs
 install(TARGETS ProjectSafe RUNTIME DESTINATION bin COMPONENT app)
@@ -59,6 +63,7 @@ add_custom_command(TARGET ProjectSafe POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:ProjectSafe> ${CMAKE_BINARY_DIR}/dist/
         COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cpack -C ${CPACK_PACKAGE_NAME}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/${CPACK_PACKAGE_NAME}.exe ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LIBS_DIR}/discord-rpc.dll ${CMAKE_BINARY_DIR}/dist/
         COMMENT "Building installer and uploading files"
         )
 

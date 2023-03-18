@@ -8,5 +8,8 @@
   }, {
     "name" : "cxxopts",
     "version>=" : "3.1.0"
+  }, {
+    "name" : "discord-rpc",
+    "version>=" : "3.4.0#2"
   } ]
 }

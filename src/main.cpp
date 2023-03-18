@@ -2,6 +2,8 @@
 
 #include "app/App.h"
 
+#include "discord/Discord.h"
+
 using namespace Application;
 
 using namespace cxxopts;
@@ -9,6 +11,8 @@ using namespace cxxopts;
 string loadKey(const string& filename);
 
 int main(int argc, char** argv) {
+
+    std::thread t(discord); // create a new thread to execute discord()
 
     auto app = new App();
 
