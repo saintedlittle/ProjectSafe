@@ -15,6 +15,8 @@
 #include <cryptopp/filters.h>
 #include "cryptopp/osrng.h"
 
+#include <cryptopp/files.h>
+
 using namespace std;
 
 using namespace CryptoPP;
@@ -27,6 +29,9 @@ namespace Encryption {
         static string encryptToFile(const string& key, const string& input, const string& filename);
 
         static string decryptFromFile(const string& key, const string& filename);
+
+        static bool encryptFile(const string& key, const string& inputFile, const string& outputFile);
+        static string decryptFile(const string& key, const string& encryptedFilename, const string& decryptedFilename);
 
     };
 

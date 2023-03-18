@@ -9,6 +9,7 @@ using namespace cxxopts;
 string loadKey(const string& filename);
 
 int main(int argc, char** argv) {
+
     auto app = new App();
 
     Options options("Project Safe", "Encryption project.");

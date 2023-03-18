@@ -20,7 +20,7 @@ add_executable(ProjectSafe
         src/key/SafeKey.h
         src/file/FileManager.cpp src/file/FileManager.h)
 
-target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts)
+target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts Crow::Crow)
 
 # Install the executable and any required DLLs
 install(TARGETS ProjectSafe RUNTIME DESTINATION bin COMPONENT app)
