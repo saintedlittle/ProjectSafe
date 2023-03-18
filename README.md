@@ -13,3 +13,4 @@ USE REDIST 2013!
 - [X] Commandline arguments.
 - [X] Installer.
 - [X] Folder in USERHOME.
+- [X] Discord-rpc.
