@@ -58,7 +58,7 @@ namespace Application {
             } else if (operation == 6) {
                 break;
             } else {
-                cerr << "SELECT 1/2/3/4/5 !!!" << endl;
+                getOperation();
             }
 
             isFirst = false;
@@ -130,7 +130,7 @@ namespace Application {
         // Get the key from the user and save it in the files
         USE_COLOR(BACKGROUND_YELLOW);
         USE_COLOR(BOLD_BLACK);
-        cout << "Select operation(1/2/3/4):";
+        cout << "Select operation(1/2/3/4/5/6):";
         RESET_COLOR
 
         cin >> answer;
