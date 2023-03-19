@@ -36,9 +36,6 @@
     // Presence Start Timestamp
     presence.startTimestamp = time(nullptr);
 
-    // Presence End Timestamp
-    presence.endTimestamp = time(nullptr) + 60 * 60;
-
     // Presence Large Image
     presence.largeImageKey = "default";
     presence.largeImageText = "https://leanfe.github.io";
