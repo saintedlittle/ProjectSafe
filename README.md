@@ -1,7 +1,7 @@
 # ProjectSafe
 A secure messenger project.
 
-USE REDIST 2013!
+USE REDIST 2022!
 
 ## TODO ✅:
 - [X] Config.
@@ -14,3 +14,4 @@ USE REDIST 2013!
 - [X] Installer.
 - [X] Folder in USERHOME.
 - [X] Discord-rpc.
+- [X] Localization.

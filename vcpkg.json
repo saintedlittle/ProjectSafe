@@ -4,12 +4,22 @@
   "builtin-baseline" : "82e03905f54fc49d11346e5148e3860747604d86",
   "dependencies" : [ {
     "name" : "cryptopp",
-    "version>=" : "8.7.0#3"
+    "version>=" : "8.7.0#3",
+    "$comment" : "    # this is heuristically generated, and may not be correct\n\n    find_package(cryptopp CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE cryptopp::cryptopp)\n"
   }, {
     "name" : "cxxopts",
-    "version>=" : "3.1.0"
+    "version>=" : "3.1.1",
+    "$comment" : "    # this is heuristically generated, and may not be correct\n\n    find_package(cxxopts CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE cxxopts::cxxopts)\n"
   }, {
     "name" : "discord-rpc",
-    "version>=" : "3.4.0#2"
+    "version>=" : "3.4.0#3"
+  }, {
+    "name" : "imgui",
+    "version>=" : "1.89.4#1",
+    "$comment" : "    # this is heuristically generated, and may not be correct\n\n    find_package(imgui CONFIG REQUIRED)\n\n    target_link_libraries(main PRIVATE imgui::imgui)\n"
+  } ],
+  "overrides" : [ {
+    "name" : "discord-rpc",
+    "version" : "3.4.0#3"
   } ]
 }

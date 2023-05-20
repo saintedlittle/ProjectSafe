@@ -1,18 +1,27 @@
 #include <cxxopts.hpp>
+#include <thread>
 
 #include "app/App.h"
 
 #include "discord/Discord.h"
 
+#include "locale/LocalizationManager.h"
+
 using namespace Application;
 
+using namespace localize;
+
 using namespace cxxopts;
+using namespace std;
 
 string loadKey(const string& filename);
 
 int main(int argc, char** argv) {
 
-    std::thread t(discord); // create a new thread to execute discord()
+    LocalizationManager localizationManager = LocalizationManager();
+
+
+    thread t(discord); // create a new thread to execute discord()
 
     auto app = new App();
 
@@ -63,6 +72,7 @@ int main(int argc, char** argv) {
         app->setKey(loadKey(ik));
 
     app->process();
+
     return EXIT_SUCCESS;
 }
 

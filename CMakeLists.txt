@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.22)
 project(ProjectSafe)
 
 set(CMAKE_CXX_STANDARD 20)
+
+set(CMAKE_TOOLCHAIN_FILE C:/Users/saintedlittle/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake)
 
 set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 set(VCPKG_BUILD_TYPE "static")
@@ -22,7 +24,10 @@ add_executable(ProjectSafe
         src/util/Colors.h
         src/key/SafeKey.cpp
         src/key/SafeKey.h
-        src/file/FileManager.cpp src/file/FileManager.h src/discord/Discord.h)
+        src/file/FileManager.cpp src/file/FileManager.h src/discord/Discord.h
+        src/locale/LocalizationManager.cpp
+        src/locale/LocalizationManager.h
+)
 
 target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts ${DiscordRpcLib})
 
