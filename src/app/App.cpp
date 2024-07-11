@@ -1,13 +1,10 @@
-//
-// Created by lkapi on 25.02.2023.
-//
-
 #include "App.h"
 
 #include <fstream>
 #include <utility>
 
 using namespace Encryption;
+using namespace std;
 
 namespace Application {
 
@@ -16,7 +13,7 @@ namespace Application {
         helpMessage();
 
         bool isFirst = true;
-        while (1) {
+        while (true) {
             if (!isFirst) {
                 cout << endl;
                 helpMessageBody();
@@ -162,16 +159,16 @@ namespace Application {
     }
 
     void App::setKey(string str) {
-        this->key = std::move(str);
+        this->key = move(str);
     }
 
     void App::setOutput(string str) {
-        this->output = std::move(str);
+        this->output = move(str);
         isOutputDefined = true;
     }
 
     void App::setInput(string str) {
-        this->input = std::move(str);
+        this->input = move(str);
         isInputDefined = true;
     }
 
@@ -189,15 +186,15 @@ namespace Application {
         FileManager fileManager;
         filesystem::path folder_path = fileManager.getKeysPath();
 
-        std::filesystem::directory_iterator end_itr;
+        filesystem::directory_iterator end_itr;
         int file_number = 1;
 
-        for (std::filesystem::directory_iterator itr(folder_path); itr != end_itr; ++itr) {
-            if (std::filesystem::is_regular_file(itr->path())) {
-                auto creation_time = std::filesystem::last_write_time(itr->path());
-                auto system_time = std::chrono::time_point_cast<std::chrono::system_clock::duration>(creation_time - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now());
-                std::time_t creation_date = std::chrono::system_clock::to_time_t(system_time);
-                std::cout << file_number << ". " << itr->path().filename().string() << " - " << std::ctime(&creation_date);
+        for (filesystem::directory_iterator itr(folder_path); itr != end_itr; ++itr) {
+            if (is_regular_file(itr->path())) {
+                auto creation_time = last_write_time(itr->path());
+                auto system_time = chrono::time_point_cast<chrono::system_clock::duration>(creation_time - filesystem::file_time_type::clock::now() + chrono::system_clock::now());
+                time_t creation_date = chrono::system_clock::to_time_t(system_time);
+                cout << file_number << ". " << itr->path().filename().string() << " - " << ctime(&creation_date);
                 file_number++;
             }
         }

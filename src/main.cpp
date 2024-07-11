@@ -1,6 +1,5 @@
 #include <cxxopts.hpp>
 #include <thread>
-
 #include "app/App.h"
 
 #include "discord/Discord.h"
@@ -20,7 +19,6 @@ int main(int argc, char** argv) {
 
     LocalizationManager localizationManager = LocalizationManager();
 
-
     thread t(discord); // create a new thread to execute discord()
 
     auto app = new App();
@@ -35,7 +33,7 @@ int main(int argc, char** argv) {
             ("h,help", "This menu.")
             ;
 
-    auto result = options.parse(argc, argv);
+    const auto result = options.parse(argc, argv);
 
     if (result.count("help"))
     {
