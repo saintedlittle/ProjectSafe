@@ -8,18 +8,13 @@
 #define PROJECTSAFE_ENCRYPTOR_H
 
 #include <string>
-#include <iostream>
-#include <fstream>
 #include <cryptopp/aes.h>
-#include <cryptopp/modes.h>
-#include <cryptopp/filters.h>
-#include "cryptopp/osrng.h"
 
-#include <cryptopp/files.h>
+#include <cryptopp/filters.h>
+
 
 using namespace std;
 
-using namespace CryptoPP;
 using CryptoPP::AES;
 
 namespace Encryption {

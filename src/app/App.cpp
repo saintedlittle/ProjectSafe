@@ -4,7 +4,6 @@
 #include <utility>
 
 using namespace Encryption;
-using namespace std;
 
 namespace Application {
 

@@ -1,29 +1,22 @@
-#include <cxxopts.hpp>
+#include <iostream>
+#include <string>
 #include <thread>
+#include <cxxopts.hpp>
+
 #include "app/App.h"
-
 #include "discord/Discord.h"
-
 #include "locale/LocalizationManager.h"
-
-using namespace Application;
-
-using namespace localize;
-
-using namespace cxxopts;
-using namespace std;
 
 string loadKey(const string& filename);
 
 int main(int argc, char** argv) {
-
-    LocalizationManager localizationManager = LocalizationManager();
+    localize::LocalizationManager localizationManager = localize::LocalizationManager();
 
     thread t(discord); // create a new thread to execute discord()
 
-    auto app = new App();
+    auto app = new Application::App();
 
-    Options options("Project Safe", "Encryption project.");
+    cxxopts::Options options("Project Safe", "Encryption project.");
 
     options.add_options()
             ("k,key", "Define key.", cxxopts::value<string>())
@@ -79,11 +72,11 @@ string loadKey(const string& filename) {
     switch (key.load(filename)) {
         case 1:
             key.save(filename, "TOKEN");
-            key.load(filename);
-            return key.getToken();
+        key.load(filename);
+        return key.getToken();
         case 2:
             getch();
-            exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     return key.getToken();

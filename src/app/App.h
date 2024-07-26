@@ -17,8 +17,6 @@
 #include "../util/Colors.h"
 #include "../key/SafeKey.h"
 
-using namespace std;
-
 using namespace UI;
 using namespace Encryption;
 

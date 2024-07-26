@@ -4,6 +4,12 @@
 
 #include "Encryptor.h"
 
+#include "cryptopp/osrng.h"
+#include <cryptopp/files.h>
+#include <cryptopp/modes.h>
+#include <iostream>
+#include <fstream>
+
 namespace Encryption {
     string Encryptor::decryptFromFile(const string &key, const string &filename) {
         ifstream file(filename, ios::in | ios::binary);
@@ -15,13 +21,13 @@ namespace Encryption {
         file.read(reinterpret_cast<char*>(iv), AES::BLOCKSIZE);
 
         AES::Decryption aesDecryption((CryptoPP::byte*)key.c_str(), AES::DEFAULT_KEYLENGTH);
-        CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv);
+        CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv);
 
         string decryptedData;
         vector<CryptoPP::byte> buffer((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-        ArraySource arraySource(buffer.data(), buffer.size(), true,
-                                new StreamTransformationFilter(cbcDecryption,
-                                                               new StringSink(decryptedData)));
+        CryptoPP::ArraySource arraySource(buffer.data(), buffer.size(), true,
+                                          new CryptoPP::StreamTransformationFilter(cbcDecryption,
+                                                                                   new CryptoPP::StringSink(decryptedData)));
 
         file.close();
         return decryptedData;
@@ -34,10 +40,10 @@ namespace Encryption {
         prng.GenerateBlock(iv, sizeof(iv));
 
         AES::Encryption aesEncryption((CryptoPP::byte*)key.c_str(), AES::DEFAULT_KEYLENGTH);
-        CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, iv);
+        CryptoPP::CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, iv);
 
         string ciphertext;
-        StreamTransformationFilter stfEncryptor(cbcEncryption, new StringSink(ciphertext));
+        CryptoPP::StreamTransformationFilter stfEncryptor(cbcEncryption, new CryptoPP::StringSink(ciphertext));
         stfEncryptor.Put(reinterpret_cast<const unsigned char*>(input.c_str()), input.length());
         stfEncryptor.MessageEnd();
 
@@ -65,7 +71,7 @@ namespace Encryption {
         }
 
         // Generate a random initialization vector
-        AutoSeededRandomPool prng;
+        CryptoPP::AutoSeededRandomPool prng;
         CryptoPP::byte iv[AES::BLOCKSIZE];
         prng.GenerateBlock(iv, sizeof(iv));
 
@@ -73,10 +79,10 @@ namespace Encryption {
         out.write(reinterpret_cast<const char*>(iv), AES::BLOCKSIZE);
 
         // Create the encryption object
-        CBC_Mode<AES>::Encryption encryptor(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size(), iv);
+        CryptoPP::CBC_Mode<AES>::Encryption encryptor(reinterpret_cast<const CryptoPP::byte*>(key.data()), key.size(), iv);
 
         // Encrypt the data and write it to the output file
-        FileSource(in, true, new StreamTransformationFilter(encryptor, new FileSink(out)));
+        CryptoPP::FileSource(in, true, new CryptoPP::StreamTransformationFilter(encryptor, new CryptoPP::FileSink(out)));
 
         return true;
     }
@@ -88,13 +94,13 @@ namespace Encryption {
         encryptedFile.close();
 
         // Generate the initialization vector and decrypt the data
-        AutoSeededRandomPool prng;
+        CryptoPP::AutoSeededRandomPool prng;
         CryptoPP::byte iv[AES::BLOCKSIZE];
         prng.GenerateBlock(iv, sizeof(iv));
-        CBC_Mode<AES>::Decryption decryption((CryptoPP::byte*)key.data(), key.length(), iv);
+        CryptoPP::CBC_Mode<AES>::Decryption decryption((CryptoPP::byte*)key.data(), key.length(), iv);
         string decryptedData;
-        StringSource(encryptedData, true,
-                     new StreamTransformationFilter(decryption, new StringSink(decryptedData)));
+        CryptoPP::StringSource(encryptedData, true,
+                               new CryptoPP::StreamTransformationFilter(decryption, new CryptoPP::StringSink(decryptedData)));
 
         // Write the decrypted data to the output file
         ofstream decryptedFile(decryptedFilename, ios::binary);
