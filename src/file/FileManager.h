@@ -10,38 +10,36 @@
 #include <string>
 #include <filesystem>
 
-#include <iostream>
 #include <fstream>
-#include <cstdlib>
-
-using namespace std;
 
 namespace Files {
 
     class FileManager {
     public:
-        explicit FileManager(string  programName="ProjectSafe");
-        ofstream createFile(const string& filename);
-        ofstream createBinaryFile(const string& filename);
+        explicit FileManager(std::string  programName="ProjectSafe");
 
-        ifstream openFile(const string& filename);
-        ifstream openBinaryFile(const string& filename);
+        [[nodiscard]] std::ofstream createFile(const std::string& filename) const;
 
-        bool deleteFile(const string& filename);
+        [[nodiscard]] std::ofstream createBinaryFile(const std::string& filename) const;
 
-        string getFolderPath() { return m_folderPath.string(); }
+        [[nodiscard]] std::ifstream openFile(const std::string& filename) const;
+        [[nodiscard]] std::ifstream openBinaryFile(const std::string& filename) const;
 
-        filesystem::path getKeysPath() { return m_folderPath_keys; }
+        [[nodiscard]] bool deleteFile(const std::string& filename) const;
+
+        [[nodiscard]] std::string getFolderPath() const { return m_folderPath.string(); }
+
+        std::filesystem::path getKeysPath() { return m_folderPath_keys; }
 
     private:
-        string m_programName;
-        filesystem::path m_folderPath;
-        filesystem::path m_folderPath_keys;
-        filesystem::path m_folderPath_data;
+        std::string m_programName;
+        std::filesystem::path m_folderPath;
+        std::filesystem::path m_folderPath_keys;
+        std::filesystem::path m_folderPath_data;
 
-        bool createFolder();
-        bool createData();
-        bool createKeys();
+        [[nodiscard]] bool createFolder() const;
+        [[nodiscard]] bool createData() const;
+        [[nodiscard]] bool createKeys() const;
     };
 
 } // Files

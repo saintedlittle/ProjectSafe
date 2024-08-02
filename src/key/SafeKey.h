@@ -10,14 +10,10 @@
                                             new_file.close();
 
 #include <string>
-#include <fstream>
-#include <iostream>
 #include <utility>
 
 #include "../util/Colors.h"
 #include "../file/FileManager.h"
-
-using namespace std;
 
 using namespace UI;
 using namespace Files;
@@ -26,20 +22,20 @@ namespace Encryption {
 
     class SafeKey {
     public:
-        explicit SafeKey(string xor_key="You are on thin ice") : xor_key_(std::move(xor_key)) {}
+        explicit SafeKey(std::string xor_key="You are on thin ice") : xor_key_(std::move(xor_key)) {}
 
-        bool save(const string& filename, const string& data);
+        bool save(const std::string& filename, const std::string& data);
 
-        int load(const string& filename);
+        int load(const std::string& filename);
 
-        string getToken();
+        std::string getToken();
 
     private:
-        [[nodiscard]] string xor_cipher(const string& data) const;
+        [[nodiscard]] std::string xor_cipher(const std::string& data) const;
 
-        string xor_key_;
+        std::string xor_key_;
 
-        string token;
+        std::string token;
 
         FileManager fileManager;
     };

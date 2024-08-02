@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <thread>
 #include <cxxopts.hpp>
@@ -7,22 +6,28 @@
 #include "discord/Discord.h"
 #include "locale/LocalizationManager.h"
 
-string loadKey(const string& filename);
+#include <QtWidgets/QtWidgets>
 
-int main(int argc, char** argv) {
-    localize::LocalizationManager localizationManager = localize::LocalizationManager();
+#include "key/SafeKey.h"
 
-    thread t(discord); // create a new thread to execute discord()
+std::string loadKey(const std::string& filename);
 
-    auto app = new Application::App();
+int main(const int argc, char** argv) {
+    
+
+    auto localizationManager = localize::LocalizationManager();
+
+    std::thread t(discord); // create a new thread to execute discord()
+
+    const auto app = new Application::App();
 
     cxxopts::Options options("Project Safe", "Encryption project.");
 
     options.add_options()
-            ("k,key", "Define key.", cxxopts::value<string>())
-            ("ik,key-file", "Define key-file.", cxxopts::value<string>())
-            ("f,file", "Define input file.", cxxopts::value<string>())
-            ("o,output", "Define output file.", cxxopts::value<string>())
+            ("k,key", "Define key.", cxxopts::value<std::string>())
+            ("ik,key-file", "Define key-file.", cxxopts::value<std::string>())
+            ("f,file", "Define input file.", cxxopts::value<std::string>())
+            ("o,output", "Define output file.", cxxopts::value<std::string>())
             ("h,help", "This menu.")
             ;
 
@@ -30,30 +35,30 @@ int main(int argc, char** argv) {
 
     if (result.count("help"))
     {
-        cout << options.help() << endl;
+        std::cout << options.help() << std::endl;
         exit(0);
     }
 
-    string output;
+    std::string output;
     if (result.count("output"))
-        output = result["output"].as<string>();
+        output = result["output"].as<std::string>();
 
-    string file;
+    std::string file;
     if (result.count("file"))
-        file = result["file"].as<string>();
+        file = result["file"].as<std::string>();
 
     if (!output.empty())
         app->setOutput(output);
     if(!file.empty())
         app->setInput(file);
 
-    string key;
+    std::string key;
     if (result.count("key"))
-        key = result["key"].as<string>();
+        key = result["key"].as<std::string>();
 
-    string ik;
+    std::string ik;
     if (result.count("key-file"))
-        ik = result["key-file"].as<string>();
+        ik = result["key-file"].as<std::string>();
 
     if (ik.empty())
         if (!key.empty())
@@ -64,10 +69,9 @@ int main(int argc, char** argv) {
 
     app->process();
 
-    return EXIT_SUCCESS;
 }
 
-string loadKey(const string& filename) {
+std::string loadKey(const std::string& filename) {
     SafeKey key;
     switch (key.load(filename)) {
         case 1:
@@ -75,7 +79,7 @@ string loadKey(const string& filename) {
         key.load(filename);
         return key.getToken();
         case 2:
-            getch();
+            getchar();
         exit(EXIT_FAILURE);
     }
 

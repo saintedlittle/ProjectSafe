@@ -3,14 +3,20 @@ project(ProjectSafe)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(LIBS_DIR ${CMAKE_SOURCE_DIR}/libs)
+# Путь к Qt
+set(Qt_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\lib\\cmake\\Qt6")
+set(LIBS_DIR "D:/ProjectSafe/libs")
 
+# Поиск необходимых пакетов
 find_package(cryptopp CONFIG REQUIRED)
 find_package(cxxopts CONFIG REQUIRED)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
 # Найдите библиотеку Discord RPC
 find_library(DiscordRpcLib NAMES discord-rpc PATHS ${LIBS_DIR})
 
+# Добавление исходных файлов
 add_executable(ProjectSafe
         src/main.cpp
         src/app/App.cpp
@@ -27,11 +33,28 @@ add_executable(ProjectSafe
 
 # Подключение библиотек и директорий
 target_include_directories(ProjectSafe PRIVATE ${WEBVIEW2_INCLUDE_DIRS} ${INCLUDE_WINRT_DIR})
-target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts ${DiscordRpcLib})
+target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts ${DiscordRpcLib} Qt6::Core Qt6::Gui Qt6::Widgets)
 
 # Установка исполняемого файла и необходимых DLL
 install(TARGETS ProjectSafe RUNTIME DESTINATION bin COMPONENT app)
 install(FILES ${LIBS_DIR}/discord-rpc.dll DESTINATION bin COMPONENT app)
+
+# Найдите все необходимые Qt6 DLL
+file(GLOB QT_DLLS "${Qt6_INSTALL_PREFIX}/bin/*.dll")
+
+# Скопируйте все Qt6 DLL в папку с исполняемым файлом
+add_custom_command(TARGET ProjectSafe POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/dist
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:ProjectSafe> ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LIBS_DIR}/discord-rpc.dll ${CMAKE_BINARY_DIR}/dist/
+        #COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QT_DLLS} ${CMAKE_BINARY_DIR}/dist/
+        COMMENT "Building installer and uploading files"
+)
+
+# Установка всех Qt6 DLL вместе с основным исполняемым файлом
+foreach(QT_DLL ${QT_DLLS})
+    install(FILES ${QT_DLL} DESTINATION bin COMPONENT app)
+endforeach()
 
 # Создание инсталлятора
 set(CPACK_GENERATOR NSIS) # Использовать NSIS как генератор инсталлятора
@@ -60,16 +83,6 @@ set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MENU_LINKS "bin\\\\ProjectSafe.exe" "${CPACK_PACKAGE_NAME}")
 
 include(CPack)
-
-# Построение инсталлятора и загрузка файлов
-add_custom_command(TARGET ProjectSafe POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/dist
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:ProjectSafe> ${CMAKE_BINARY_DIR}/dist/
-        COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR} cpack -C ${CPACK_PACKAGE_NAME}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/${CPACK_PACKAGE_NAME}.exe ${CMAKE_BINARY_DIR}/dist/
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LIBS_DIR}/discord-rpc.dll ${CMAKE_BINARY_DIR}/dist/
-        COMMENT "Building installer and uploading files"
-)
 
 # Определение цели, которая строит инсталлятор и загружает файлы
 add_custom_target(installer DEPENDS ProjectSafe)

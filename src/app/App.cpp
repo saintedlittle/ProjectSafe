@@ -1,9 +1,12 @@
 #include "App.h"
 
+#include <filesystem>
 #include <fstream>
-#include <utility>
+#include "../file/FileManager.h"
+#include "../key/SafeKey.h"
 
 using namespace Encryption;
+using namespace std;
 
 namespace Application {
 
@@ -154,7 +157,7 @@ namespace Application {
         cout << "\n";
         USE_COLOR(BOLD_CYAN);
         cout << "Press any key to exit." << endl;
-        _getch();  // wait for a key press
+        getchar();  // wait for a key press
     }
 
     void App::setKey(string str) {
@@ -182,10 +185,10 @@ namespace Application {
     }
 
     void App::display_file_table() {
-        FileManager fileManager;
-        filesystem::path folder_path = fileManager.getKeysPath();
+        Files::FileManager fileManager;
+        const filesystem::path folder_path = fileManager.getKeysPath();
 
-        filesystem::directory_iterator end_itr;
+        const filesystem::directory_iterator end_itr;
         int file_number = 1;
 
         for (filesystem::directory_iterator itr(folder_path); itr != end_itr; ++itr) {

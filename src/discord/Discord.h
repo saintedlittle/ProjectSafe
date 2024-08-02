@@ -5,27 +5,24 @@
 #ifndef PROJECTSAFE_DISCORD_H
 #define PROJECTSAFE_DISCORD_H
 
-#include <iostream>
 #include <discord_rpc.h>
 #include <chrono>
 #include <random>
 #include <cstring>
 
-[[noreturn]] void discord() {
+[[noreturn]] inline void discord() {
     // Discord App ID
-    const char* app_id = "1086700430882504725";
+    auto app_id = "1086700430882504725";
 
     // Discord User ID
-    const char* user_id = "1086186960982388776";
+    auto user_id = "1086186960982388776";
 
     // Initialize Discord RPC
-    DiscordEventHandlers handlers;
-    memset(&handlers, 0, sizeof(handlers));
+    DiscordEventHandlers handlers = {};
     Discord_Initialize(app_id, &handlers, 1, user_id);
 
     // Set Discord Rich Presence
-    DiscordRichPresence presence;
-    memset(&presence, 0, sizeof(presence));
+    DiscordRichPresence presence = {};
 
     // Presence Details
     presence.details = "💀💀💀";
@@ -68,14 +65,14 @@
         // Generate Random String
         std::string random_string(dis(gen), ' ');
         std::generate_n(random_string.begin(), random_string.length(), []() {
-            static const char alphanum[] =
+            static constexpr char alphanum[] =
                     "0123456789"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     "abcdefghijklmnopqrstuvwxyz";
-            std::random_device rd;
-            std::mt19937 gen(rd());
-            std::uniform_int_distribution<> dis(0, sizeof(alphanum) - 1);
-            return alphanum[dis(gen)];
+            std::random_device random_device;
+            std::mt19937 gen(random_device());
+            std::uniform_int_distribution<> distribution(0, sizeof(alphanum) - 1);
+            return alphanum[distribution(gen)];
         });
 
         // Set Presence Description

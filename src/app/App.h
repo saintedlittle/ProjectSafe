@@ -7,20 +7,13 @@
 #ifndef PROJECTSAFE_APP_H
 #define PROJECTSAFE_APP_H
 
-#include <string>
-
-#include <conio.h>
-
-#include "cryptopp/osrng.h"
-
 #include "../encryption/Encryptor.h"
 #include "../util/Colors.h"
-#include "../key/SafeKey.h"
 
 using namespace UI;
 using namespace Encryption;
 
-#define WAIT                 USE_COLOR(BOLD_WHITE); cout << "\nPRESS ANY BUTTON... " << endl; RESET_COLOR getch();
+#define WAIT                 USE_COLOR(BOLD_WHITE); cout << "\nPRESS ANY BUTTON... " << endl; RESET_COLOR getchar();
 
 namespace Application {
 
@@ -28,24 +21,24 @@ namespace Application {
     public:
         void process();
 
-        void setKey(string str);
+        void setKey(std::string str);
 
-        void setOutput(string str);
-        void setInput(string str);
+        void setOutput(std::string str);
+        void setInput(std::string str);
 
     private:
-        string key;
+        std::string key;
 
-        string output;
+        std::string output;
         bool isOutputDefined;
 
-        string input;
+        std::string input;
         bool isInputDefined;
 
-        string askKeyInput();
+        std::string askKeyInput();
 
-        static string getInputString();
-        static string getFilename();
+        static std::string getInputString();
+        static std::string getFilename();
         static int getOperation();
 
         static void helpMessage();

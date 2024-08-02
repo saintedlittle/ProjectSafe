@@ -7,10 +7,7 @@
 #ifndef PROJECTSAFE_COLORS_H
 #define PROJECTSAFE_COLORS_H
 
-#include <string>
 #include <iostream>
-
-using namespace std;
 
 #define RESET_COLOR UI::setColor(Colors::RESET);
 #define USE_COLOR(color) UI::setColor(Colors::color);

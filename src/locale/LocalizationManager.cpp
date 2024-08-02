@@ -4,6 +4,9 @@
 
 #include "LocalizationManager.h"
 
+#include <clocale>
+#include <fstream>
+
 namespace localize {
     LocalizationManager::LocalizationManager() {
         // определение языка системы

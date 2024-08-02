@@ -36,10 +36,10 @@
 
 namespace Files {
 
-    FileManager::FileManager(string  programName)
+    FileManager::FileManager(std::string  programName)
             : m_programName(std::move(programName))
     {
-        m_folderPath = filesystem::path(getenv(ENV_HOME)) / m_programName;
+        m_folderPath = std::filesystem::path(getenv(ENV_HOME)) / m_programName;
         m_folderPath_keys = m_folderPath / "keys";
         m_folderPath_data = m_folderPath / "data";
 
@@ -48,102 +48,98 @@ namespace Files {
         createKeys();
     }
 
-    bool FileManager::createFolder()
-    {
-        if (filesystem::exists(m_folderPath))
+    bool FileManager::createFolder() const {
+        if (std::filesystem::exists(m_folderPath))
         {
             return true;
         }
 
-        error_code error;
-        filesystem::create_directories(m_folderPath, error);
+        std::error_code error;
+        std::filesystem::create_directories(m_folderPath, error);
 
         return !error;
     }
 
-    bool FileManager::createData() {
-        if (filesystem::exists(m_folderPath_data))
+    bool FileManager::createData() const {
+        if (std::filesystem::exists(m_folderPath_data))
         {
             return true;
         }
 
-        error_code error;
-        filesystem::create_directories(m_folderPath_data, error);
+        std::error_code error;
+        std::filesystem::create_directories(m_folderPath_data, error);
 
         return !error;
     }
 
-    bool FileManager::createKeys() {
-        if (filesystem::exists(m_folderPath_keys))
+    bool FileManager::createKeys() const {
+        if (std::filesystem::exists(m_folderPath_keys))
         {
             return true;
         }
 
-        error_code error;
-        filesystem::create_directories(m_folderPath_keys, error);
+        std::error_code error;
+        std::filesystem::create_directories(m_folderPath_keys, error);
 
         return !error;
     }
 
-    ofstream FileManager::createFile(const string& filename)
-    {
-        filesystem::path filePath = m_folderPath_data / filename;
+    std::ofstream FileManager::createFile(const std::string& filename) const {
+        std::filesystem::path filePath = m_folderPath_data / filename;
 
-        if (filesystem::exists(filePath))
+        if (std::filesystem::exists(filePath))
         {
-            return ofstream(filePath.string(), ios::out);
+            return std::ofstream(filePath.string(), std::ios::out);
         }
 
-        return ofstream(filePath.string(), ios::out);
+        return std::ofstream(filePath.string(), std::ios::out);
     }
 
 
-    ofstream FileManager::createBinaryFile(const string &filename) {
-        filesystem::path filePath = m_folderPath_keys / filename;
+    std::ofstream FileManager::createBinaryFile(const std::string &filename) const {
+        std::filesystem::path filePath = m_folderPath_keys / filename;
 
-        if (filesystem::exists(filePath))
+        if (std::filesystem::exists(filePath))
         {
-            return ofstream(filePath.string(), ios::binary | ios::out);
+            return std::ofstream(filePath.string(), std::ios::binary | std::ios::out);
         }
 
-        return ofstream(filePath.string(), ios::binary | ios::out);
+        return std::ofstream(filePath.string(), std::ios::binary | std::ios::out);
     }
 
-    ifstream FileManager::openFile(const string& filename)
-    {
-        filesystem::path filePath = m_folderPath_data / filename;
+    std::ifstream FileManager::openFile(const std::string& filename) const {
+        std::filesystem::path filePath = m_folderPath_data / filename;
 
-        if (!filesystem::exists(filePath))
+        if (!std::filesystem::exists(filePath))
         {
             return {};
         }
 
-        return ifstream(filePath.string());
+        return std::ifstream(filePath.string());
     }
 
 
-    ifstream FileManager::openBinaryFile(const string &filename) {
-        filesystem::path filePath = m_folderPath_keys / filename;
+    std::ifstream FileManager::openBinaryFile(const std::string &filename) const {
+        std::filesystem::path filePath = m_folderPath_keys / filename;
 
-        if (!filesystem::exists(filePath))
+        if (!std::filesystem::exists(filePath))
         {
             return {};
         }
 
-        return ifstream(filePath.string(), ios::binary);
+        return std::ifstream(filePath.string(), std::ios::binary);
     }
 
-    bool FileManager::deleteFile(const string& filename)
-    {
-        filesystem::path filePath = m_folderPath_data / filename;
+    bool FileManager::deleteFile(const std::string& filename) const {
+        const std::filesystem::path filePath = m_folderPath_data / filename;
 
-        if (!filesystem::exists(filePath))
+        if (!std::filesystem::exists(filePath))
         {
             return false;
         }
 
-        error_code error;
-        filesystem::remove(filePath, error);
+        std::error_code error;
+        std::filesystem::remove(filePath, error);
 
         return !error;
     }

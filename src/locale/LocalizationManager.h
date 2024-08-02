@@ -9,8 +9,6 @@
 #define PROJECTSAFE_LOCALIZATIONMANAGER_H
 
 
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <unordered_map>
 

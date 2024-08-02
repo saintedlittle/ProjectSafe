@@ -10,6 +10,8 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 namespace Encryption {
     string Encryptor::decryptFromFile(const string &key, const string &filename) {
         ifstream file(filename, ios::in | ios::binary);
@@ -24,7 +26,7 @@ namespace Encryption {
         CryptoPP::CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv);
 
         string decryptedData;
-        vector<CryptoPP::byte> buffer((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+        vector<CryptoPP::byte> buffer((istreambuf_iterator(file)), istreambuf_iterator<char>());
         CryptoPP::ArraySource arraySource(buffer.data(), buffer.size(), true,
                                           new CryptoPP::StreamTransformationFilter(cbcDecryption,
                                                                                    new CryptoPP::StringSink(decryptedData)));

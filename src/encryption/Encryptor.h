@@ -7,13 +7,7 @@
 #ifndef PROJECTSAFE_ENCRYPTOR_H
 #define PROJECTSAFE_ENCRYPTOR_H
 
-#include <string>
 #include <cryptopp/aes.h>
-
-#include <cryptopp/filters.h>
-
-
-using namespace std;
 
 using CryptoPP::AES;
 
@@ -21,12 +15,12 @@ namespace Encryption {
 
     class Encryptor {
     public:
-        static string encryptToFile(const string& key, const string& input, const string& filename);
+        static std::string encryptToFile(const std::string& key, const std::string& input, const std::string& filename);
 
-        static string decryptFromFile(const string& key, const string& filename);
+        static std::string decryptFromFile(const std::string& key, const std::string& filename);
 
-        static bool encryptFile(const string& key, const string& inputFile, const string& outputFile);
-        static string decryptFile(const string& key, const string& encryptedFilename, const string& decryptedFilename);
+        static bool encryptFile(const std::string& key, const std::string& inputFile, const std::string& outputFile);
+        static std::string decryptFile(const std::string& key, const std::string& encryptedFilename, const std::string& decryptedFilename);
 
     };
 

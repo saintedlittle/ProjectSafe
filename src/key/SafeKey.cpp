@@ -4,6 +4,8 @@
 
 #include "SafeKey.h"
 
+using namespace std;
+
 namespace Encryption {
 
     bool SafeKey::save(const string &filename, const string &data) {
