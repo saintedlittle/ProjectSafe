@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 # Путь к Qt
 set(Qt_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\lib\\cmake\\Qt6")
 set(LIBS_DIR "D:/ProjectSafe/libs")
+set(Qt_BIN_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\bin")
+set(Qt_PLUGINS_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\plugins\\platforms")
 
 # Поиск необходимых пакетов
 find_package(cryptopp CONFIG REQUIRED)
@@ -19,8 +21,8 @@ find_library(DiscordRpcLib NAMES discord-rpc PATHS ${LIBS_DIR})
 # Добавление исходных файлов
 add_executable(ProjectSafe
         src/main.cpp
-        src/app/App.cpp
-        src/app/App.h
+        src/console/App.cpp
+        src/console/App.h
         src/encryption/Encryptor.cpp
         src/encryption/Encryptor.h
         src/util/Colors.h
@@ -29,6 +31,9 @@ add_executable(ProjectSafe
         src/file/FileManager.cpp src/file/FileManager.h src/discord/Discord.h
         src/locale/LocalizationManager.cpp
         src/locale/LocalizationManager.h
+        src/gui/GUIManager.cpp
+        src/gui/GUIManager.h
+        src/gui/GUIManager.h
 )
 
 # Подключение библиотек и директорий
@@ -39,22 +44,18 @@ target_link_libraries(ProjectSafe PRIVATE cryptopp::cryptopp cxxopts::cxxopts ${
 install(TARGETS ProjectSafe RUNTIME DESTINATION bin COMPONENT app)
 install(FILES ${LIBS_DIR}/discord-rpc.dll DESTINATION bin COMPONENT app)
 
-# Найдите все необходимые Qt6 DLL
-file(GLOB QT_DLLS "${Qt6_INSTALL_PREFIX}/bin/*.dll")
-
-# Скопируйте все Qt6 DLL в папку с исполняемым файлом
+# Добавление кастомных команд для создания директорий и копирования DLL
 add_custom_command(TARGET ProjectSafe POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/dist
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/dist/platforms
         COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:ProjectSafe> ${CMAKE_BINARY_DIR}/dist/
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${LIBS_DIR}/discord-rpc.dll ${CMAKE_BINARY_DIR}/dist/
-        #COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QT_DLLS} ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Qt_BIN_DIR}/Qt6Core.dll ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Qt_BIN_DIR}/Qt6Gui.dll ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Qt_BIN_DIR}/Qt6Widgets.dll ${CMAKE_BINARY_DIR}/dist/
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Qt_PLUGINS_DIR}/qwindows.dll ${CMAKE_BINARY_DIR}/dist/platforms/
         COMMENT "Building installer and uploading files"
 )
-
-# Установка всех Qt6 DLL вместе с основным исполняемым файлом
-foreach(QT_DLL ${QT_DLLS})
-    install(FILES ${QT_DLL} DESTINATION bin COMPONENT app)
-endforeach()
 
 # Создание инсталлятора
 set(CPACK_GENERATOR NSIS) # Использовать NSIS как генератор инсталлятора
@@ -81,6 +82,13 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_NSIS_CREATE_DESKTOP_SHORTCUT ON)
 set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set(CPACK_NSIS_MENU_LINKS "bin\\\\ProjectSafe.exe" "${CPACK_PACKAGE_NAME}")
+
+# Добавляем файлы для установки в инсталлятор
+set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
+        "File /r \"${CMAKE_BINARY_DIR}/dist/*\""
+        "CreateDirectory \"\$INSTDIR\\platforms\""
+        "File /r \"${CMAKE_BINARY_DIR}/dist/platforms/*\""
+)
 
 include(CPack)
 

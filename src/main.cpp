@@ -2,42 +2,28 @@
 #include <thread>
 #include <cxxopts.hpp>
 
-#include "app/App.h"
+#include "console/App.h"
 #include "discord/Discord.h"
 #include "locale/LocalizationManager.h"
 
 #include <QtWidgets/QtWidgets>
 
+#include "gui/GUIManager.h"
 #include "key/SafeKey.h"
 
 std::string loadKey(const std::string& filename);
 
-int main(int argc, char** argv) {
-    QApplication qtapp(argc, argv);
+void setupDiscord();
 
-    // Create a basic Qt window
-    QWidget window;
-    window.setWindowTitle("Qt Window");
-    window.resize(400, 300);
-
-    // Optionally, add a button to the window
-    auto* button = new QPushButton("Click me", &window);
-    button->setGeometry(10, 10, 100, 30);
-
-    // Show the window
-    window.show();
-
-    qtapp.exec();
-
-    auto localizationManager = localize::LocalizationManager();
-
-    std::thread t(discord); // create a new thread to execute discord()
-
-    const auto app = new Application::App();
-
+int main(const int argc, char** argv) {
+    // setupDiscord();
     cxxopts::Options options("Project Safe", "Encryption project.");
 
+    bool useConsole = false;
+    const auto app = new Application::App();
+
     options.add_options()
+            ("c,console", "Open in console mode", cxxopts::value<bool>())
             ("k,key", "Define key.", cxxopts::value<std::string>())
             ("ik,key-file", "Define key-file.", cxxopts::value<std::string>())
             ("f,file", "Define input file.", cxxopts::value<std::string>())
@@ -52,6 +38,9 @@ int main(int argc, char** argv) {
         std::cout << options.help() << std::endl;
         exit(0);
     }
+
+    if (result.count("console"))
+        useConsole = result["console"].as<bool>();
 
     std::string output;
     if (result.count("output"))
@@ -81,8 +70,14 @@ int main(int argc, char** argv) {
     else if (!ik.empty())
         app->setKey(loadKey(ik));
 
-    app->process();
+    if (useConsole) {
+        auto localizationManager = localize::LocalizationManager();
+        app->process();
+    }
 
+    auto window = GUI::GUIManager();
+    return window.init(argc, argv);
+    return window.init(argc, argv);
 }
 
 std::string loadKey(const std::string& filename) {
@@ -95,7 +90,12 @@ std::string loadKey(const std::string& filename) {
         case 2:
             getchar();
         exit(EXIT_FAILURE);
+        default:;
     }
 
     return key.getToken();
+}
+
+void setupDiscord() {
+    std::thread t(discord);
 }
