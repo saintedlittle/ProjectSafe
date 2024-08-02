@@ -12,8 +12,22 @@
 
 std::string loadKey(const std::string& filename);
 
-int main(const int argc, char** argv) {
-    
+int main(int argc, char** argv) {
+    QApplication qtapp(argc, argv);
+
+    // Create a basic Qt window
+    QWidget window;
+    window.setWindowTitle("Qt Window");
+    window.resize(400, 300);
+
+    // Optionally, add a button to the window
+    auto* button = new QPushButton("Click me", &window);
+    button->setGeometry(10, 10, 100, 30);
+
+    // Show the window
+    window.show();
+
+    qtapp.exec();
 
     auto localizationManager = localize::LocalizationManager();
 
