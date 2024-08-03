@@ -1,10 +1,4 @@
-//
-// Created by rrarw on 02.08.2024.
-//
-
 #include "ChatListWidget.h"
-#include <QListWidgetItem>
-
 #include "chat/ChatItemWidget.h"
 
 namespace Widgets {
@@ -17,23 +11,35 @@ namespace Widgets {
         // Connect item clicked signal
         connect(this, &QListWidget::itemClicked, this, &ChatListWidget::onItemClicked);
 
-        addChatItem("John Doe", "Hello there!");
-        addChatItem("Jane Smith", "How are you?");
-        addChatItem("Alice Johnson", "See you at 5 PM");
+        // Example items with different types
+        addChatItem("John Doe", "Hello there!", ChatType::Personal);
+        addChatItem("Jane Smith", "How are you?", ChatType::Channel);
+        addChatItem("Alice Johnson", "See you at 5 PM", ChatType::Group);
     }
 
-    void ChatListWidget::addChatItem(const QString& name, const QString& lastMessage) {
+    void ChatListWidget::addChatItem(const QString& name, const QString& lastMessage, const ChatType type) {
         auto* item = new QListWidgetItem();  // Removed parent parameter
-        auto* widget = new ChatItemWidget(name, lastMessage);
+        auto* widget = new ChatItemWidget(name, lastMessage, type);
         item->setSizeHint(widget->sizeHint());
         addItem(item);  // Add the item to the list
         setItemWidget(item, widget);  // Associate the widget with the item
     }
 
     void ChatListWidget::onItemClicked(QListWidgetItem* item) {
-        // Extract chat details from the item widget
         if (const auto* chatItemWidget = dynamic_cast<ChatItemWidget*>(itemWidget(item))) {
-            emit chatSelected(chatItemWidget->objectName(), 10, 100);  // Example values for onlineCount and totalCount
+            QString status;
+            switch (chatItemWidget->getChatType()) {
+            case ChatType::Personal:
+                status = "Last seen recently";
+                break;
+            case ChatType::Channel:
+                status = QString("%1 members online").arg(10);  // Example value
+                break;
+            case ChatType::Group:
+                status = QString("%1 online / %2 total").arg(10).arg(100);  // Example values
+                break;
+            }
+            emit chatSelected(chatItemWidget->getName(), status);  // Emit the signal with name and status
         }
     }
 

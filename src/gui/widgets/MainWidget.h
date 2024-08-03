@@ -19,7 +19,7 @@ namespace Widgets {
         MainWidget();
 
         private slots:
-            void updateChatHeader(const QString& name, int onlineCount, int totalCount) const;
+            void updateChatHeader(const QString& name, const QString& status) const;
 
     private:
         ChatListWidget* chatList;

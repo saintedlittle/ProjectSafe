@@ -1,12 +1,8 @@
-//
-// Created by rrarw on 02.08.2024.
-//
-
 #include "ChatHeaderWidget.h"
 
 namespace Widgets {
 
-    ChatHeaderWidget::ChatHeaderWidget(const QString& chatName, int onlineCount, int totalCount, QWidget* parent)
+    ChatHeaderWidget::ChatHeaderWidget(const QString& chatName, const QString& status, QWidget* parent)
         : QWidget(parent) {
 
         QHBoxLayout* layout = new QHBoxLayout(this);
@@ -26,8 +22,8 @@ namespace Widgets {
         nameLabel->setStyleSheet("font-weight: bold;");
         detailsLayout->addWidget(nameLabel);
 
-        onlineInfoLabel = new QLabel(QString("%1 online / %2 total").arg(onlineCount).arg(totalCount), this);
-        detailsLayout->addWidget(onlineInfoLabel);
+        statusLabel = new QLabel(status, this);
+        detailsLayout->addWidget(statusLabel);
 
         layout->addLayout(detailsLayout);
         layout->addStretch();  // Push settings button to the right
@@ -40,9 +36,9 @@ namespace Widgets {
         setLayout(layout);
     }
 
-    void ChatHeaderWidget::setChatDetails(const QString& chatName, const int onlineCount, const int totalCount) const {
+    void ChatHeaderWidget::setChatDetails(const QString& chatName, const QString& status) const {
         nameLabel->setText(chatName);
-        onlineInfoLabel->setText(QString("%1 online / %2 total").arg(onlineCount).arg(totalCount));
+        statusLabel->setText(status);
     }
 
 } // Widgets

@@ -1,6 +1,5 @@
 #ifndef GUIMANAGER_H
 #define GUIMANAGER_H
-#include <qapplication.h>
 
 #include "tasks/DiscordThread.h"
 

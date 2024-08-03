@@ -185,7 +185,7 @@ namespace Application {
     }
 
     void App::display_file_table() {
-        Files::FileManager fileManager;
+        FileManager fileManager;
         const filesystem::path folder_path = fileManager.getKeysPath();
 
         const filesystem::directory_iterator end_itr;

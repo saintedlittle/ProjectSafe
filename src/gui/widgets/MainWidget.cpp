@@ -13,34 +13,26 @@
 
 namespace Widgets {
 
-    MainWidget::MainWidget() {
-        auto* mainLayout = new QHBoxLayout(this);
+    MainWidget::MainWidget()
+        : QWidget(nullptr),
+          chatList(new ChatListWidget(this)),
+          chatHeader(new ChatHeaderWidget("Select a chat", "", this)),
+          splitter(new QSplitter(Qt::Horizontal, this)),
+          chatContentWidget(new QWidget(this)) {
 
-        splitter = new QSplitter(Qt::Horizontal, this);
+        auto* mainLayout = new QHBoxLayout(this);
         mainLayout->addWidget(splitter);
 
-        chatList = new ChatListWidget(this);
         connect(chatList, &ChatListWidget::chatSelected, this, &MainWidget::updateChatHeader);
+
         splitter->addWidget(chatList);
 
-        chatContentWidget = new QWidget(this);
         auto* chatContentLayout = new QVBoxLayout(chatContentWidget);
-
-        // Add separator
-        // auto* separator = new QFrame(chatContentWidget);
-        // separator->setFrameShape(QFrame::HLine);
-        // separator->setFrameShadow(QFrame::Sunken);
-        // chatContentLayout->addWidget(separator);
-
-        // Chat header widget
-        chatHeader = new ChatHeaderWidget("Select a chat", 0, 0, this);
         chatContentLayout->addWidget(chatHeader);
 
-        // Chat window widget
         auto* chatWindow = new ChatWindowWidget(this);
         chatContentLayout->addWidget(chatWindow);
 
-        // Chat input panel
         auto* chatInputPanel = new ChatInputPanel(this);
         chatContentLayout->addWidget(chatInputPanel);
 
@@ -53,8 +45,8 @@ namespace Widgets {
         setWindowTitle("Chat Application");
     }
 
-    void MainWidget::updateChatHeader(const QString& name, const int onlineCount, const int totalCount) const {
-        chatHeader->setChatDetails(name, onlineCount, totalCount);
+    void MainWidget::updateChatHeader(const QString& name, const QString& status) const {
+        chatHeader->setChatDetails(name, status);
     }
 
 } // Widgets

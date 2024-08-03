@@ -1,7 +1,3 @@
-//
-// Created by rrarw on 02.08.2024.
-//
-
 #ifndef CHATHEADERWIDGET_H
 #define CHATHEADERWIDGET_H
 
@@ -11,19 +7,18 @@
 
 namespace Widgets {
 
-
     class ChatHeaderWidget final : public QWidget {
         Q_OBJECT
 
     public:
-        ChatHeaderWidget(const QString& chatName, int onlineCount, int totalCount, QWidget* parent = nullptr);
+        ChatHeaderWidget(const QString& chatName, const QString& status, QWidget* parent = nullptr);
 
-        void setChatDetails(const QString& chatName, int onlineCount, int totalCount) const;
+        void setChatDetails(const QString& chatName, const QString& status) const;
 
     private:
         QLabel* avatarLabel;
         QLabel* nameLabel;
-        QLabel* onlineInfoLabel;
+        QLabel* statusLabel;
         QPushButton* settingsButton;
     };
 

@@ -63,6 +63,8 @@ add_executable(ProjectSafe
         src/gui/widgets/chat/ChatWindowWidget.h
         src/gui/widgets/chat/ChatInputPanel.cpp
         src/gui/widgets/chat/ChatInputPanel.h
+        src/gui/widgets/chat/ChatType.h
+        src/gui/widgets/chat/ChatType.h
 )
 
 # Подключение библиотек и директорий

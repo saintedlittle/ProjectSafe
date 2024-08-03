@@ -66,8 +66,9 @@ int main(const int argc, char** argv) {
     else if (!ik.empty())
         app->setKey(loadKey(ik));
 
+    auto localizationManager = localize::LocalizationManager();
+
     if (useConsole) {
-        auto localizationManager = localize::LocalizationManager();
         app->process();
         exit(EXIT_SUCCESS);
     }

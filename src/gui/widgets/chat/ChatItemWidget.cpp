@@ -1,12 +1,10 @@
-//
-// Created by rrarw on 02.08.2024.
-//
-
 #include "ChatItemWidget.h"
 
 namespace Widgets {
-    ChatItemWidget::ChatItemWidget(const QString& name, const QString& lastMessage, QWidget* parent)
-        : QWidget(parent) {
+
+    ChatItemWidget::ChatItemWidget(const QString& name, const QString& lastMessage, ChatType chatType, QWidget* parent)
+        : QWidget(parent), chatType(chatType) {  // Инициализируем chatType
+
         const auto layout = new QHBoxLayout(this);
         layout->setContentsMargins(0, 0, 0, 0);
 
@@ -28,4 +26,13 @@ namespace Widgets {
         layout->addLayout(textLayout);
         setLayout(layout);
     }
+
+    QString ChatItemWidget::getName() const {
+        return nameLabel->text();
+    }
+
+    ChatType ChatItemWidget::getChatType() const {
+        return chatType;
+    }
+
 } // Widgets
