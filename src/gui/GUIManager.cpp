@@ -1,33 +1,47 @@
 #include "GUIManager.h"
 
-#include <qapplication.h>
-#include <qpushbutton.h>
+#include <QApplication>
+#include <QThread>
+#include "widgets/MainWidget.h"
 
 namespace GUI {
 
-    GUIManager::GUIManager(): use_fullscreen(false) {
+    GUIManager::GUIManager() : use_fullscreen(false), discordThread(nullptr) {
         preinit();
     }
 
     void GUIManager::preinit() {
         title = "My Qt Application";
-        size.first = 400;
-        size.second = 300;
+        size.first = 800;
+        size.second = 600;
     }
 
-    int GUIManager::init(int argc, char **argv) const {
+    void GUIManager::startPresence() {
+        if (discordThread == nullptr) {
+            discordThread = new Threads::DiscordThread();
+            discordThread->setPriority(QThread::NormalPriority);
+            discordThread->start();
+        }
+    }
+
+    int GUIManager::init(int argc, char **argv) {
         QApplication qtapp(argc, argv);
 
-        QWidget window;
-        window.setWindowTitle("Hello QT!");
-        window.resize(400, 300);
+        Widgets::MainWidget mainWindow;
+        mainWindow.resize(size.first, size.second);
+        mainWindow.show();
 
-        auto* button = new QPushButton("Click me", &window);
-        button->setGeometry(10, 10, 100, 30);
+        startPresence();
 
-        window.show();
+        int result = qtapp.exec();
 
-        return qtapp.exec();
+        if (discordThread != nullptr) {
+            discordThread->quit();
+            discordThread->wait();
+            delete discordThread;
+        }
+
+        return result;
     }
 
-} // namespace GUI
+}

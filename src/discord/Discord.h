@@ -8,9 +8,8 @@
 #include <discord_rpc.h>
 #include <chrono>
 #include <random>
-#include <cstring>
 
-[[noreturn]] inline void discord() {
+inline void discord() {
     // Discord App ID
     auto app_id = "1086700430882504725";
 
@@ -18,11 +17,14 @@
     auto user_id = "1086186960982388776";
 
     // Initialize Discord RPC
-    DiscordEventHandlers handlers = {};
+    DiscordEventHandlers handlers;
+    memset(&handlers, 0, sizeof(handlers));
     Discord_Initialize(app_id, &handlers, 1, user_id);
 
     // Set Discord Rich Presence
-    DiscordRichPresence presence = {};
+    DiscordRichPresence presence;
+    memset(&presence, 0, sizeof(presence));
+
 
     // Presence Details
     presence.details = "💀💀💀";

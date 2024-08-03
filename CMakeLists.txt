@@ -3,18 +3,23 @@ project(ProjectSafe)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(LIBS_DIR "D:/ProjectSafe/libs")
+
 # Путь к Qt
 set(Qt_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\lib\\cmake\\Qt6")
-set(LIBS_DIR "D:/ProjectSafe/libs")
 set(Qt_BIN_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\bin")
 set(Qt_PLUGINS_DIR "D:\\Qt\\6.7.2\\msvc2019_64\\plugins\\platforms")
+
+# Qt-шная хуйня
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
 # Поиск необходимых пакетов
 find_package(cryptopp CONFIG REQUIRED)
 find_package(cxxopts CONFIG REQUIRED)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
-
 # Найдите библиотеку Discord RPC
 find_library(DiscordRpcLib NAMES discord-rpc PATHS ${LIBS_DIR})
 
@@ -34,6 +39,30 @@ add_executable(ProjectSafe
         src/gui/GUIManager.cpp
         src/gui/GUIManager.h
         src/gui/GUIManager.h
+        src/gui/widgets/chat/ChatItemWidget.cpp
+        src/gui/widgets/chat/ChatItemWidget.h
+        src/gui/widgets/chat/ChatItemWidget.h
+        src/gui/widgets/ChatListWidget.cpp
+        src/gui/widgets/ChatListWidget.h
+        src/gui/widgets/ChatListWidget.h
+        src/gui/widgets/MainWidget.cpp
+        src/gui/widgets/MainWidget.h
+        src/gui/widgets/MainWidget.h
+        src/gui/widgets/ChatListWidget.cpp
+        src/gui/widgets/MainWidget.cpp
+        src/gui/tasks/DiscordThread.h
+        src/gui/tasks/DiscordThread.h
+        src/gui/tasks/DiscordThread.h
+        src/gui/widgets/chat/ChatHeaderWidget.cpp
+        src/gui/widgets/chat/ChatHeaderWidget.h
+        src/gui/widgets/chat/ChatHeaderWidget.h
+        src/gui/widgets/chat/ChatHeaderWidget.cpp
+        src/gui/widgets/chat/ChatHeaderWidget.h
+        src/gui/widgets/chat/ChatWindowWidget.cpp
+        src/gui/widgets/chat/ChatWindowWidget.h
+        src/gui/widgets/chat/ChatWindowWidget.h
+        src/gui/widgets/chat/ChatInputPanel.cpp
+        src/gui/widgets/chat/ChatInputPanel.h
 )
 
 # Подключение библиотек и директорий

@@ -3,7 +3,6 @@
 #include <cxxopts.hpp>
 
 #include "console/App.h"
-#include "discord/Discord.h"
 #include "locale/LocalizationManager.h"
 
 #include <QtWidgets/QtWidgets>
@@ -13,10 +12,7 @@
 
 std::string loadKey(const std::string& filename);
 
-void setupDiscord();
-
 int main(const int argc, char** argv) {
-    // setupDiscord();
     cxxopts::Options options("Project Safe", "Encryption project.");
 
     bool useConsole = false;
@@ -73,10 +69,10 @@ int main(const int argc, char** argv) {
     if (useConsole) {
         auto localizationManager = localize::LocalizationManager();
         app->process();
+        exit(EXIT_SUCCESS);
     }
 
     auto window = GUI::GUIManager();
-    return window.init(argc, argv);
     return window.init(argc, argv);
 }
 
@@ -94,8 +90,4 @@ std::string loadKey(const std::string& filename) {
     }
 
     return key.getToken();
-}
-
-void setupDiscord() {
-    std::thread t(discord);
 }
